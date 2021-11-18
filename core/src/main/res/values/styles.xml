@@ -102,4 +102,9 @@
     <style name="AboutSurfIcon">
         <item name="drawableBottomCompat">@drawable/surfnet_background</item>
     </style>
+
+    <style name="AboutAppIcon">
+        <item name="drawableBottomCompat">@drawable/logo_tiqr_small</item>
+    </style>
+
 </resources>

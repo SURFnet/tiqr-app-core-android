@@ -93,11 +93,15 @@
     </style>
 
     <style name="BottomBarIconSmallRight">
-        <item name="android:src">@drawable/ic_launcher</item>
+        <item name="android:src">@drawable/logo_power_by_surf</item>
     </style>
 
     <style name="TopBarIconSmall">
         <item name="android:background">@drawable/appbar_background</item>
+    </style>
+
+    <style name="AboutAppIcon">
+        <item name="drawableBottomCompat">@drawable/ic_launcher</item>
     </style>
 
 
