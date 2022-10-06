@@ -36,11 +36,11 @@
     <string name="error_auth_no_identities">Geen accounts gevonden voor de dienst, registreer eerst.</string>
 
     <string name="error_auth_title_pin">Verkeerde PIN</string>
-    <string name="error_auth_pin_x_attempts_left">De opgegeven PIN is onjuist. Je hebt nog %d pogingen. Voer nogmaals je PIN in. Let hierbij op het controle teken bij het laatste cijfer.</string>
-    <string name="error_auth_pin_one_attempt_left">Je hebt nog één laatste poging. Als je weer een foute PIN invoert zullen alle tiqr accounts op dit toestel geblokkeerd worden.</string>
+    <string name="error_auth_pin_x_attempts_left">De opgegeven PIN is onjuist. Je hebt nog %d pogingen. Voer nogmaals je PIN in.</string>
+    <string name="error_auth_pin_one_attempt_left">Je hebt nog één laatste poging. Als je weer een foute PIN invoert zullen alle accounts in deze app geblokkeerd worden.</string>
     <string name="error_auth_title_biometric">Verkeerde biometrie</string>
     <string name="error_auth_biometric_x_attempts_left">De opgegeven biometrie is onjuist. Je hebt nog %d pogingen. Bevestig nogmaals je biometrie.</string>
-    <string name="error_auth_biometric_one_attempt_left">Je hebt nog één laatste poging. Als je weer een foute biometrie opgeeft zullen alle tiqr accounts op dit toestel geblokkeerd worden.</string>
+    <string name="error_auth_biometric_one_attempt_left">Je hebt nog één laatste poging. Als je weer een foute biometrie opgeeft zullen alle accounts in deze app geblokkeerd worden.</string>
 
     <string name="error_auth_title_blocked">Account geblokkeerd</string>
     <string name="error_auth_blocked">Dit account is niet langer geldig.</string>
