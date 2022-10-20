@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "91c9ba0b406e6f00ad2d01d03fb3a7e8",
+    "identityHash": "ae5babc07e1529d14e9f0a1a03bc931f",
     "entities": [
       {
         "tableName": "identity",
@@ -162,11 +162,11 @@
         "indices": [
           {
             "name": "index_identityprovider_identifier",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "identifier"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_identityprovider_identifier` ON `${TABLE_NAME}` (`identifier`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_identityprovider_identifier` ON `${TABLE_NAME}` (`identifier`)"
           }
         ],
         "foreignKeys": []
@@ -175,7 +175,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '91c9ba0b406e6f00ad2d01d03fb3a7e8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ae5babc07e1529d14e9f0a1a03bc931f')"
     ]
   }
 }
