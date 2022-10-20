@@ -129,7 +129,7 @@ class AuthenticationRepository(
 
         // Check if there are multiple identities
         val identities = database.getIdentities(identityProvider.identifier)
-        val multipleIdentities = challengeUrlParams.username.isBlank() && identities.size > 1
+        val multipleIdentities = challengeUrlParams.username.isNullOrBlank() && identities.size > 1
         if (multipleIdentities) {
             Timber.d("Found ${identities.size} identities for ${identityProvider.identifier}," +
                     " and the challenge did not contain a specific username.")
@@ -143,7 +143,7 @@ class AuthenticationRepository(
                 returnUrl = challengeUrlParams.returnUrl,
                 sessionKey = challengeUrlParams.sessionKey,
                 challenge = challengeUrlParams.challenge,
-                isStepUpChallenge = challengeUrlParams.username.isNotEmpty(), // what does this mean? to be used to check if raw-challenge already has an identity
+                isStepUpChallenge = !(challengeUrlParams.username.isNullOrBlank()), // what does this mean? to be used to check if raw-challenge already has an identity
                 serviceProviderDisplayName = identityProvider.displayName,
                 serviceProviderIdentifier = ""
         ).run {
