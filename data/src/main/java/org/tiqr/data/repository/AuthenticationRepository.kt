@@ -105,7 +105,7 @@ class AuthenticationRepository(
                 }
 
         // Check if identity is known
-        val identity = if (challengeUrlParams.username.isNotBlank()) {
+        val identity = if (!challengeUrlParams.username.isNullOrBlank()) {
             database.getIdentity(challengeUrlParams.username, identityProvider.identifier)
                     ?: return AuthenticationParseFailure(
                             reason = AuthenticationParseFailure.Reason.INVALID_IDENTITY,

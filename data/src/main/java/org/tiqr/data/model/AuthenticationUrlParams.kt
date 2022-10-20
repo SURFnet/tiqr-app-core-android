@@ -5,7 +5,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import timber.log.Timber
 
 class AuthenticationUrlParams private constructor(
-    val username: String,
+    val username: String?,
     val protocolVersion: Int,
     val sessionKey: String,
     val challenge: String,
@@ -95,7 +95,7 @@ class AuthenticationUrlParams private constructor(
                 Timber.w("Challenge URL not according to format. Expected path parameter: '${TiqrConfig.authPathParam}', got: '$firstPathParam'.")
                 return null
             }
-            val username = uri.getQueryParameter("u") ?: return missingParameter("u")
+            val username = uri.getQueryParameter("u")
             val protocolVersion = uri.getQueryParameter("v")?.toIntOrNull() ?: 0
             val challenge = uri.getQueryParameter("q") ?: return missingParameter("q")
             val sessionKey = uri.getQueryParameter("s") ?: return missingParameter("s")
