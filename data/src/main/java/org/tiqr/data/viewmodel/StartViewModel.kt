@@ -37,6 +37,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import org.tiqr.data.R
 import org.tiqr.data.service.DatabaseService
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -46,11 +47,17 @@ import javax.inject.Inject
 class StartViewModel @Inject constructor(db: DatabaseService) : ViewModel() {
     private val _identityCount: Flow<Int> = db.identityCount()
             .onStart { emit(value = 0) }
-            .catch { emit(value = 0) }
+            .catch { ex ->
+                Timber.w(ex, "Unable to determine identity count!")
+                emit(value = 0)
+            }
 
     private val _allIdentitiesBlocked: Flow<Boolean> = db.allIdentitiesBlocked()
             .onStart { emit(value = false) }
-            .catch { emit(value = false) }
+            .catch { ex ->
+                Timber.w(ex, "Unable to fetch all identities!")
+                emit(value = false)
+            }
 
     /**
      * Current number of identities.

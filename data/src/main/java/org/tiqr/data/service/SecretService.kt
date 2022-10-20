@@ -140,7 +140,7 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
                     }
                 } catch (e: IOException) {
                     try {
-                        Timber.e(e, "Loading keystore failed, retrying with fallback")
+                        Timber.w(e, "Loading keystore failed, retrying with fallback")
                         context.openFileInput(KEYSTORE_FILENAME).use {
                             keyStore.load(it, encryption.deviceKey().encoded.toCharArrayCompat(CompatType.Fallback))
                             migrateKeystore = true
