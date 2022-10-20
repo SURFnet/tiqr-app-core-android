@@ -177,6 +177,10 @@ fun RecyclerView.header(@LayoutRes view: Int) {
  */
 @BindingAdapter(value = ["loadImage"])
 fun ImageView.loadImage(url: String?) {
+    if (url.isNullOrEmpty()) {
+        setImageDrawable(null)
+        return
+    }
     load(url) {
         crossfade(true)
         listener(onError = { _, e -> Timber.e(e, "Error loading image from $url") })
