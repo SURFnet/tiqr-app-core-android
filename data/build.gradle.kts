@@ -1,4 +1,4 @@
-import java.util.Properties
+import java.util.*
 
 plugins {
     id("com.android.library")
@@ -34,6 +34,11 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    sourceSets {
+        // Adds exported schema location as test app assets.
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -56,7 +61,7 @@ android {
             }
 
             arguments {
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
+                arg("room.schemaLocation", "$projectDir/schemas")
                 arg("room.incremental", "true")
             }
         }
@@ -101,6 +106,7 @@ android {
         api(libs.timber)
 
         testImplementation(libs.junit)
+        testImplementation("androidx.room:room-testing:2.4.3")
         androidTestImplementation(libs.androidx.testing.junit)
         androidTestImplementation(libs.androidx.testing.epsresso)
         androidTestImplementation(libs.kotlinx.coroutines.test)
