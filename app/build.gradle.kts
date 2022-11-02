@@ -27,8 +27,9 @@ android {
         // Tiqr config
         manifestPlaceholders["tiqr_config_token_exchange_base_url"] = "https://tx.tiqr.org/"
         manifestPlaceholders["tiqr_config_protocol_version"] = "2"
-        manifestPlaceholders["tiqr_config_protocol_compatibility_mode"] =  "true"
-        manifestPlaceholders["tiqr_config_enforce_challenge_hosts"] = "tiqr.nl,surfconext.nl"
+        manifestPlaceholders["tiqr_config_protocol_compatibility_mode"] = "true"
+        manifestPlaceholders["tiqr_config_enforce_challenge_hosts"] =
+            "tiqr.nl,surfconext.nl,eduid.nl"
         manifestPlaceholders["tiqr_config_enroll_path_param"] = "tiqrenroll"
         manifestPlaceholders["tiqr_config_auth_path_param"] = "tiqrauth"
         manifestPlaceholders["tiqr_config_enroll_scheme"] = "tiqrenroll"
@@ -36,7 +37,24 @@ android {
         manifestPlaceholders["tiqr_config_token_exchange_enabled"] = "false"
 
         // only package supported languages
-        resourceConfigurations += listOf("en", "da", "de", "es", "fr", "fy", "hr", "ja", "lt", "nl", "no", "ro", "sk", "sl", "sr", "tr" )
+        resourceConfigurations += listOf(
+            "en",
+            "da",
+            "de",
+            "es",
+            "fr",
+            "fy",
+            "hr",
+            "ja",
+            "lt",
+            "nl",
+            "no",
+            "ro",
+            "sk",
+            "sl",
+            "sr",
+            "tr"
+        )
     }
 
     buildTypes {
@@ -78,7 +96,7 @@ android {
     }
 
     lint {
-        isAbortOnError = false
+        abortOnError = false
     }
 }
 
@@ -116,6 +134,7 @@ dependencies {
 
     implementation(libs.dagger.hilt.android)
     implementation(libs.dagger.hilt.fragment)
+    implementation(libs.androidx.room.testing)
     kapt(libs.dagger.hilt.compiler)
 
     implementation(libs.permission)
@@ -135,6 +154,7 @@ dependencies {
     api(libs.timber)
 
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.junit)
     androidTestImplementation(libs.androidx.testing.core)
     androidTestImplementation(libs.androidx.testing.junit)

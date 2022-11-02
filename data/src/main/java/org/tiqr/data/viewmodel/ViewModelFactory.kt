@@ -63,7 +63,7 @@ interface ViewModelFactory {
 fun <C : Challenge> ViewModelFactory.challengeViewModel(challenge: C): ViewModelProvider.Factory {
     return object : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return when (challenge) {
                 is EnrollmentChallenge -> enrollmentFactory.create(MutableLiveData(challenge)) as T
                 is AuthenticationChallenge -> authenticationFactory.create(MutableLiveData(challenge)) as T

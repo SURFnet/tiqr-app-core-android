@@ -183,7 +183,7 @@ fun ImageView.loadImage(url: String?) {
     }
     load(url) {
         crossfade(true)
-        listener(onError = { _, e -> Timber.e(e, "Error loading image from $url") })
+        listener(onError = { _, errorResult -> Timber.e(errorResult.throwable, "Error loading image from $url") })
     }
 }
 
