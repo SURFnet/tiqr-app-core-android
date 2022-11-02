@@ -78,6 +78,11 @@ android {
         dataBinding = true
     }
 
+    sourceSets {
+        // Adds exported schema location as test app assets.
+        getByName("androidTest").assets.srcDir("$rootDir/data/schemas")
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -98,6 +103,7 @@ android {
     lint {
         abortOnError = false
     }
+    namespace = "org.tiqr.sample"
 }
 
 dependencies {

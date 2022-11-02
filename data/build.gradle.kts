@@ -34,11 +34,6 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
-    sourceSets {
-        // Adds exported schema location as test app assets.
-        getByName("androidTest").assets.srcDir("$projectDir/schemas")
-    }
-
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -76,6 +71,8 @@ android {
         }
     }
 
+    namespace = "org.tiqr.data"
+
     dependencies {
         implementation(libs.kotlin.stdlib)
         implementation(libs.kotlinx.coroutines.core)
@@ -106,7 +103,7 @@ android {
         api(libs.timber)
 
         testImplementation(libs.junit)
-        testImplementation("androidx.room:room-testing:2.4.3")
+        testImplementation(libs.androidx.room.testing)
         androidTestImplementation(libs.androidx.testing.junit)
         androidTestImplementation(libs.androidx.testing.epsresso)
         androidTestImplementation(libs.kotlinx.coroutines.test)

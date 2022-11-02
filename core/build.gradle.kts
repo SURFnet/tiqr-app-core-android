@@ -53,6 +53,7 @@ android {
             jvmTarget = JavaVersion.VERSION_11.toString()
         }
     }
+    namespace = "org.tiqr.core"
 }
 
 fun loadCustomProperties(file: File): java.util.Properties {

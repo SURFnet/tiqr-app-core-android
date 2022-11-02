@@ -30,7 +30,7 @@ class TiqrDatabaseMigrationTest {
     @get:Rule
     val helper: MigrationTestHelper = MigrationTestHelper(
         /* instrumentation = */ InstrumentationRegistry.getInstrumentation(),
-        /* assetsFolder = */ TiqrDatabase::class.java.canonicalName,
+        /* assetsFolder = */ "schemas/${TiqrDatabase::class.java.canonicalName}",
         /* openFactory = */ FrameworkSQLiteOpenHelperFactory()
     )
 
