@@ -1,6 +1,7 @@
 package org.tiqr.data.database
 
 import android.database.sqlite.SQLiteConstraintException
+import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -17,10 +18,7 @@ import org.tiqr.data.database.DatabaseQueries.V8_IDENTITY2_ON_FIRST_PROVIDER
 import org.tiqr.data.database.DatabaseQueries.V8_IDENTITY2_ON_SECOND_PROVIDER
 import org.tiqr.data.database.DatabaseQueries.V8_SECOND_PROVIDER
 import org.tiqr.data.database.DatabaseQueries.V9_FIRST_PROVIDER
-import org.tiqr.data.database.DatabaseQueries.V9_IDENTITY1_ON_FIRST_PROVIDER
-import org.tiqr.data.database.DatabaseQueries.V9_IDENTITY2_ON_FIRST_PROVIDER
-import org.tiqr.data.database.TiqrDatabase.Companion.FROM_8_TO_10
-import org.tiqr.data.database.TiqrDatabase.Companion.FROM_8_TO_9
+import org.tiqr.data.database.DatabaseQueries.V9_SECOND_PROVIDER
 import timber.log.Timber
 
 @RunWith(AndroidJUnit4::class)
@@ -30,7 +28,7 @@ class TiqrDatabaseMigrationTest {
     @get:Rule
     val helper: MigrationTestHelper = MigrationTestHelper(
         /* instrumentation = */ InstrumentationRegistry.getInstrumentation(),
-        /* assetsFolder = */ "schemas/${TiqrDatabase::class.java.canonicalName}",
+        /* assetsFolder = */ TiqrDatabase::class.java.canonicalName,
         /* openFactory = */ FrameworkSQLiteOpenHelperFactory()
     )
 
@@ -54,24 +52,22 @@ class TiqrDatabaseMigrationTest {
                 /* expected = */ 9,
                 /* actual = */ version
             )
-            this.version
             close()
         }
     }
 
     @Test
-    fun givenV9UniqueIndexThenFailSameProviderIdentities() {
-        helper.createDatabase(TEST_DB, 9).apply {
+    fun givenV9UniqueIndexThenFailSameProviderIdentitifier() {
+        helper.createDatabase("fail_insert", 9).apply {
             try {
                 execSQL(V9_FIRST_PROVIDER)
-                execSQL(V9_IDENTITY1_ON_FIRST_PROVIDER)
-                execSQL(V9_IDENTITY2_ON_FIRST_PROVIDER)
+                execSQL(V9_SECOND_PROVIDER)
             } catch (e: SQLiteConstraintException) {
                 Timber.e(e, "Failed to insert data into v9")
             }
-            val cursor = query("SELECT * FROM identity WHERE identityprovider=0")
+            val cursor = query("SELECT * FROM identityprovider")
             assertEquals(
-                /* message = */ "Not able to add multiple identities for the same provider",
+                /* message = */ "Not able to add multiple providers with the same identifier.",
                 /* expected = */ 1,
                 /* actual = */ cursor.count
             )
@@ -86,7 +82,7 @@ class TiqrDatabaseMigrationTest {
 
         try {
             val db = helper.runMigrationsAndValidate(TEST_DB, 10, true, FROM_8_TO_10)
-            val cursor = db.query("SELECT * FROM identity WHERE identityprovider=0")
+            val cursor = db.query("SELECT * FROM identityprovider")
             assertEquals(
                 /* message = */ "After 8 to 10 migration there is no data loss",
                 /* expected = */ 2,
@@ -96,6 +92,33 @@ class TiqrDatabaseMigrationTest {
             db.close()
         } catch (e: SQLiteConstraintException) {
             Timber.e(e, "Failed migration from 9 to 10")
+        }
+    }
+
+    @Test
+    fun givenV8WhenMigrateAllThenNoDataLoss() {
+        createV8WithData()
+
+        Room.databaseBuilder(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            TiqrDatabase::class.java,
+            TEST_DB
+        ).addMigrations(*ALL_VALID_MIGRATIONS).build().apply {
+            val db = openHelper.readableDatabase
+            val cursor = db.query("SELECT * FROM identityprovider")
+            assertEquals(
+                /* message = */ "After 8 to 10 migration there is no data loss",
+                /* expected = */ 2,
+                /* actual = */ cursor.count
+            )
+            cursor.closeQuietly()
+
+            assertEquals(
+                /* message = */ "DB integrity compromised after applying all migrations",
+                /* expected = */ true,
+                /* actual = */ db.isDatabaseIntegrityOk
+            )
+            openHelper.writableDatabase.close()
         }
     }
 
