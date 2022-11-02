@@ -322,7 +322,7 @@ class PinView : ConstraintLayout {
      * [GestureDetector] to handle clicks
      */
     class PinGestureDetector(private val onTap: () -> Unit) : GestureDetector.SimpleOnGestureListener() {
-        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             onTap.invoke()
             return true
         }
@@ -333,7 +333,7 @@ class PinView : ConstraintLayout {
      */
     class PinTouchListener(private val gestureDetector: GestureDetector) : OnTouchListener {
         @SuppressLint("ClickableViewAccessibility")
-        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        override fun onTouch(v: View?, event: MotionEvent): Boolean {
             return gestureDetector.onTouchEvent(event)
         }
     }

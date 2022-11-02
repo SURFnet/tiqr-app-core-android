@@ -33,7 +33,7 @@ import android.app.Application
 import coil.Coil
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import coil.util.CoilUtils
+import coil.disk.DiskCache
 import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 import org.tiqr.sample.BuildConfig
@@ -62,12 +62,15 @@ class SampleApplication : Application(), ImageLoaderFactory {
      */
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(context = this)
-                .crossfade(enable = true)
-                .okHttpClient {
-                    imageOkHttpClient
-                            .cache(CoilUtils.createDefaultCache(context = this))
-                            .build()
-                }
-                .build()
+            .crossfade(enable = true)
+            .diskCache(
+                DiskCache.Builder()
+                    .directory(this.cacheDir.resolve("image_cache"))
+                    .build()
+            )
+            .okHttpClient {
+                imageOkHttpClient.build()
+            }
+            .build()
     }
 }

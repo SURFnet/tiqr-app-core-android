@@ -75,7 +75,10 @@ class EnrollmentRepository(
                     val metadataHost = metadataUri.host
                     var matchesMetadataHost = false
                     TiqrConfig.enforceChallengeHosts!!.split(",").forEach { enforcedHost ->
-                        if (metadataHost != null && (metadataHost == enforcedHost || metadataHost.endsWith(".$enforcedHost"))) {
+                        if (metadataHost != null && (metadataHost == enforcedHost || metadataHost.endsWith(
+                                ".$enforcedHost"
+                            ))
+                        ) {
                             matchesMetadataHost = true
                         }
                     }
@@ -380,7 +383,7 @@ class EnrollmentRepository(
                     result.code
                 )
             ).run {
-                Timber.e("Error completing enrollment, unexpected response code")
+                Timber.e("Error completing enrollment, unexpected response code: ${result.code}")
                 ChallengeCompleteResult.failure(this)
             }
         }
