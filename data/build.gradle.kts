@@ -1,4 +1,4 @@
-import java.util.Properties
+import java.util.*
 
 plugins {
     id("com.android.library")
@@ -56,7 +56,7 @@ android {
             }
 
             arguments {
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
+                arg("room.schemaLocation", "$projectDir/schemas")
                 arg("room.incremental", "true")
             }
         }
@@ -70,6 +70,8 @@ android {
             jvmTarget = JavaVersion.VERSION_11.toString()
         }
     }
+
+    namespace = "org.tiqr.data"
 
     dependencies {
         implementation(libs.kotlin.stdlib)
@@ -101,6 +103,7 @@ android {
         api(libs.timber)
 
         testImplementation(libs.junit)
+        testImplementation(libs.androidx.room.testing)
         androidTestImplementation(libs.androidx.testing.junit)
         androidTestImplementation(libs.androidx.testing.epsresso)
         androidTestImplementation(libs.kotlinx.coroutines.test)
