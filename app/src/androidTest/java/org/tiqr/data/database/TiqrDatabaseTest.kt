@@ -58,7 +58,7 @@ class TiqrDatabaseMigrationTest {
 
     @Test
     fun givenV9UniqueIndexThenFailSameProviderIdentitifier() {
-        helper.createDatabase("fail_insert", 9).apply {
+        helper.createDatabase(TEST_DB, 9).apply {
             try {
                 execSQL(V9_FIRST_PROVIDER)
                 execSQL(V9_SECOND_PROVIDER)
