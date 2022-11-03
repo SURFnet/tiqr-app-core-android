@@ -49,7 +49,7 @@ val FROM_7_TO_8: Migration = object : Migration(7, 8) {
             execSQL("INSERT INTO new_identityprovider (_id, displayName, identifier, authenticationUrl, ocraSuite, infoUrl, logo) SELECT _id, displayName, identifier, authenticationUrl, ocraSuite, infoUrl, logo FROM identityprovider;")
             execSQL("DROP TABLE identityprovider;")
             execSQL("ALTER TABLE new_identityprovider RENAME TO identityprovider;")
-            execSQL("CREATE INDEX ip_identifier_idx ON identityprovider(identifier)")
+            execSQL("CREATE INDEX ip_identifier_idx ON identityprovider(identifier);")
         }
     }
 }
@@ -61,7 +61,7 @@ val FROM_8_TO_9: Migration = object : Migration(8, 9) {
         Timber.d("Renames fingerprint to biometric. Renames indexes.")
 
         database.run {
-            execSQL("CREATE TABLE new_identity (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayName TEXT NOT NULL, identifier TEXT NOT NULL, identityProvider INTEGER NOT NULL, blocked INTEGER NOT NULL DEFAULT 0, sortIndex INTEGER NOT NULL, biometricInUse INTEGER NOT NULL DEFAULT 0, biometricOfferUpgrade INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(identityProvider) REFERENCES identityprovider(_id) ON UPDATE NO ACTION ON DELETE RESTRICT)")
+            execSQL("CREATE TABLE new_identity (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayName TEXT NOT NULL, identifier TEXT NOT NULL, identityProvider INTEGER NOT NULL, blocked INTEGER NOT NULL DEFAULT 0, sortIndex INTEGER NOT NULL, biometricInUse INTEGER NOT NULL DEFAULT 0, biometricOfferUpgrade INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(identityProvider) REFERENCES identityprovider(_id) ON UPDATE NO ACTION ON DELETE RESTRICT);")
             execSQL("INSERT INTO new_identity (_id, displayName, identifier, identityProvider, blocked, sortIndex, biometricInUse, biometricOfferUpgrade) SELECT _id, displayName, identifier, identityProvider, blocked, sortIndex, useFingerPrint, showFingerPrintUpgrade FROM identity;")
             execSQL("DROP TABLE identity;")
             execSQL("ALTER TABLE new_identity RENAME TO identity;")
@@ -84,13 +84,13 @@ val FROM_8_TO_10: Migration = object : Migration(8, 10) {
         Timber.d("Renames fingerprint to biometric. Recreates indexes for identity table and renames it for identityprovider (ip_identifier_idx->index_identityprovider_identifier)")
 
         database.run {
-            execSQL("CREATE TABLE new_identity (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayName TEXT NOT NULL, identifier TEXT NOT NULL, identityProvider INTEGER NOT NULL, blocked INTEGER NOT NULL DEFAULT 0, sortIndex INTEGER NOT NULL, biometricInUse INTEGER NOT NULL DEFAULT 0, biometricOfferUpgrade INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(identityProvider) REFERENCES identityprovider(_id) ON UPDATE NO ACTION ON DELETE RESTRICT)")
+            execSQL("CREATE TABLE new_identity (_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, displayName TEXT NOT NULL, identifier TEXT NOT NULL, identityProvider INTEGER NOT NULL, blocked INTEGER NOT NULL DEFAULT 0, sortIndex INTEGER NOT NULL, biometricInUse INTEGER NOT NULL DEFAULT 0, biometricOfferUpgrade INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(identityProvider) REFERENCES identityprovider(_id) ON UPDATE NO ACTION ON DELETE RESTRICT);")
             execSQL("INSERT INTO new_identity (_id, displayName, identifier, identityProvider, blocked, sortIndex, biometricInUse, biometricOfferUpgrade) SELECT _id, displayName, identifier, identityProvider, blocked, sortIndex, useFingerPrint, showFingerPrintUpgrade FROM identity;")
             execSQL("DROP TABLE identity;")
             execSQL("ALTER TABLE new_identity RENAME TO identity;")
-            execSQL("CREATE UNIQUE INDEX index_identity_id ON identity(_id)")
-            execSQL("CREATE INDEX index_identity_identifier ON identity(identifier)")
-            execSQL("CREATE INDEX index_identity_identityProvider ON identity(identityProvider)")
+            execSQL("CREATE UNIQUE INDEX index_identity_id ON identity(_id);")
+            execSQL("CREATE INDEX index_identity_identifier ON identity(identifier);")
+            execSQL("CREATE INDEX index_identity_identityProvider ON identity(identityProvider);")
 
             execSQL("DROP INDEX ip_identifier_idx;")
             execSQL("CREATE INDEX index_identityprovider_identifier ON identityprovider(identifier);")
