@@ -8,6 +8,8 @@
     <string name="button_retry">Retry</string>
     <string name="button_delete">Delete</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_allow">Allow</string>
+    <string name="button_deny">Deny</string>
 
     <!-- Main -->
     <string name="button_info">About</string>
