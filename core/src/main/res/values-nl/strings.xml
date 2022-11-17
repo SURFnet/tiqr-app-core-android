@@ -113,4 +113,6 @@
     <!-- Notification channel -->
     <string name="notification_channel_name">Berichten</string>
     <string name="notification_channel_description">Notificaties voor berichten van tiqr</string>
+    <string name="button_allow">Toestaan</string>
+    <string name="button_deny">Weigeren</string>
 </resources>

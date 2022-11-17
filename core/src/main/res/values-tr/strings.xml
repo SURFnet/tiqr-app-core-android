@@ -112,4 +112,6 @@
     <!-- Notification channel -->
     <string name="notification_channel_name">Mesajlar</string>
     <string name="notification_channel_description">Tiqr\'den gelen mesajlar için bildirimler</string>
+    <string name="button_allow">Evet, eminim</string>
+    <string name="button_deny">Hayır</string>
 </resources>
