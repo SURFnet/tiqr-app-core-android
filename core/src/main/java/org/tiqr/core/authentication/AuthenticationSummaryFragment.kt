@@ -48,8 +48,8 @@ import kotlin.system.exitProcess
  */
 @AndroidEntryPoint
 class AuthenticationSummaryFragment : BaseFragment<FragmentAuthenticationSummaryBinding>() {
-    private val viewModel by hiltNavGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
     private val args by navArgs<AuthenticationSummaryFragmentArgs>()
+    private val viewModel by hiltNavGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
 
     @LayoutRes
     override val layout = R.layout.fragment_authentication_summary
@@ -73,16 +73,16 @@ class AuthenticationSummaryFragment : BaseFragment<FragmentAuthenticationSummary
     private fun showBiometricUpgrade(pin: String?) {
         if (requireContext().biometricUsable() && viewModel.challenge.value?.identity?.biometricOfferUpgrade == true && pin != null) {
             MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.account_upgrade_biometric_title)
-                    .setMessage(R.string.account_upgrade_biometric_message)
-                    .setCancelable(false)
-                    .setNegativeButton(R.string.button_cancel) { _, _ ->
-                        viewModel.stopOfferBiometric()
-                    }
-                    .setPositiveButton(R.string.button_ok) { _, _ ->
-                        viewModel.upgradeBiometric(pin)
-                    }
-                    .show()
+                .setTitle(R.string.account_upgrade_biometric_title)
+                .setMessage(R.string.account_upgrade_biometric_message)
+                .setCancelable(false)
+                .setNegativeButton(R.string.button_cancel) { _, _ ->
+                    viewModel.stopOfferBiometric()
+                }
+                .setPositiveButton(R.string.button_ok) { _, _ ->
+                    viewModel.upgradeBiometric(pin)
+                }
+                .show()
         }
     }
 }

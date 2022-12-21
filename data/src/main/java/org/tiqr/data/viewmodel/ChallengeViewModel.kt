@@ -29,24 +29,32 @@
 
 package org.tiqr.data.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import org.tiqr.data.model.Challenge
 import org.tiqr.data.model.Identity
 import org.tiqr.data.repository.base.ChallengeRepository
+import timber.log.Timber
 
 /**
  * Base ViewModel for [Challenge]
  */
-abstract class ChallengeViewModel<C : Challenge, R : ChallengeRepository<*>> : ViewModel() {
+abstract class ChallengeViewModel<C : Challenge, R : ChallengeRepository<*>>(
+    savedStateHandle: SavedStateHandle, key: String
+) : ViewModel() {
     @Suppress("PropertyName")
-    protected abstract val _challenge: MutableLiveData<C>
+    protected val _challenge: MutableLiveData<C> = MutableLiveData<C>()
     val challenge: LiveData<C> get() = _challenge
 
     protected abstract val repository: R
+
+    init {
+        if (savedStateHandle.contains(key)) {
+            _challenge.value = savedStateHandle[key]
+        } else {
+            Timber.e("SavedStateHandle does not contain key: $key. It includes: $savedStateHandle")
+        }
+    }
 
     /**
      * Upgrade [Identity] from [challenge] to use biometric authentication
@@ -72,13 +80,4 @@ abstract class ChallengeViewModel<C : Challenge, R : ChallengeRepository<*>> : V
         }
     }
 
-    /**
-     * Factory to use assisted injection.
-     */
-    interface ChallengeViewModelFactory<C : Challenge> {
-        /**
-         * Create the [ChallengeViewModel] instance
-         */
-        fun create(challenge: MutableLiveData<C>): ChallengeViewModel<C, *>
-    }
 }

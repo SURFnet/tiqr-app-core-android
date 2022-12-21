@@ -62,21 +62,29 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
             viewModel.authenticate(SecretCredential.pin(pin))
         }
 
-        viewModel.authenticate.observe(viewLifecycleOwner) {
+        viewModel.authenticate.observe(viewLifecycleOwner) { completeResult ->
             binding.progress.hide()
 
-            when (it) {
+            when (completeResult) {
                 is ChallengeCompleteResult.Success -> {
-                    findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary(binding.pin.currentPin))
+                    viewModel.challenge.value?.let { challenge ->
+                        findNavController().navigate(
+                            AuthenticationPinFragmentDirections.actionSummary(
+                                challenge = challenge,
+                                pin = binding.pin.currentPin
+                            )
+                        )
+                    }
+
                 }
                 is ChallengeCompleteResult.Failure -> {
-                    val failure = it.failure
+                    val failure = completeResult.failure
                     if (failure is AuthenticationCompleteFailure) {
                         when (failure.reason) {
                             AuthenticationCompleteFailure.Reason.UNKNOWN,
                             AuthenticationCompleteFailure.Reason.CONNECTION -> {
                                 findNavController().navigate(
-                                        AuthenticationPinFragmentDirections.actionFallback(binding.pin.currentPin)
+                                    AuthenticationPinFragmentDirections.actionFallback(binding.pin.currentPin)
                                 )
                             }
                             AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
@@ -86,26 +94,26 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
                                 }
 
                                 MaterialAlertDialogBuilder(requireContext())
-                                        .setTitle(failure.title)
-                                        .setMessage(failure.message)
-                                        .setPositiveButton(R.string.button_ok) { dialog , _ ->
-                                            if (remaining != null && remaining == 0) {
-                                                // Blocked. Pop back to start.
-                                                findNavController().popBackStack()
-                                            }
-                                            dialog.dismiss()
+                                    .setTitle(failure.title)
+                                    .setMessage(failure.message)
+                                    .setPositiveButton(R.string.button_ok) { dialog, _ ->
+                                        if (remaining != null && remaining == 0) {
+                                            // Blocked. Pop back to start.
+                                            findNavController().popBackStack()
                                         }
-                                        .show()
+                                        dialog.dismiss()
+                                    }
+                                    .show()
                             }
                             else -> {
                                 MaterialAlertDialogBuilder(requireContext())
-                                        .setTitle(failure.title)
-                                        .setMessage(failure.message)
-                                        .setPositiveButton(R.string.button_ok) { dialog, _ ->
-                                            dialog.dismiss()
-                                            findNavController().popBackStack()
-                                        }
-                                        .show()
+                                    .setTitle(failure.title)
+                                    .setMessage(failure.message)
+                                    .setPositiveButton(R.string.button_ok) { dialog, _ ->
+                                        dialog.dismiss()
+                                        findNavController().popBackStack()
+                                    }
+                                    .show()
                             }
                         }
                     }

@@ -32,25 +32,20 @@ package org.tiqr.core.enrollment
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentEnrollmentConfirmBinding
 import org.tiqr.data.viewmodel.EnrollmentViewModel
-import org.tiqr.data.viewmodel.challengeViewModel
 
 /**
  * Fragment to review and confirm the enrollment
  */
 @AndroidEntryPoint
 class EnrollmentConfirmFragment : BaseFragment<FragmentEnrollmentConfirmBinding>() {
-    private val args by navArgs<EnrollmentConfirmFragmentArgs>()
-    private val viewModel by navGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav) {
-        factory.challengeViewModel(args.challenge)
-    }
+    private val viewModel by hiltNavGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav)
 
     @LayoutRes
     override val layout = R.layout.fragment_enrollment_confirm
@@ -65,7 +60,9 @@ class EnrollmentConfirmFragment : BaseFragment<FragmentEnrollmentConfirmBinding>
         }
 
         binding.buttonOk.setOnClickListener {
-            findNavController().navigate(EnrollmentConfirmFragmentDirections.actionPin())
+            viewModel.challenge.value?.let {
+                findNavController().navigate(EnrollmentConfirmFragmentDirections.actionPin(it))
+            }
         }
     }
 }

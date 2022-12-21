@@ -61,15 +61,15 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
         binding.pin.setConfirmListener { pin ->
             if (pin != args.pin) {
                 MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(R.string.enroll_pin_verify_no_match_title)
-                        .setMessage(R.string.enroll_pin_verify_no_match_message)
-                        .setCancelable(false)
-                        .setNegativeButton(R.string.button_cancel) { _, _ -> findNavController().popBackStack() }
-                        .setPositiveButton(R.string.button_retry) { dialog, _ ->
-                            binding.pin.clear()
-                            dialog.dismiss()
-                        }
-                        .show()
+                    .setTitle(R.string.enroll_pin_verify_no_match_title)
+                    .setMessage(R.string.enroll_pin_verify_no_match_message)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.button_cancel) { _, _ -> findNavController().popBackStack() }
+                    .setPositiveButton(R.string.button_retry) { dialog, _ ->
+                        binding.pin.clear()
+                        dialog.dismiss()
+                    }
+                    .show()
             } else {
                 binding.progress.show()
                 viewModel.enroll(pin)
@@ -82,15 +82,22 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
             when (it) {
                 ChallengeCompleteResult.Success -> {
                     showBiometricUpgrade {
-                        findNavController().navigate(EnrollmentPinVerifyFragmentDirections.actionSummary())
+                        viewModel.challenge.value?.let {
+                            findNavController().navigate(
+                                EnrollmentPinVerifyFragmentDirections.actionSummary(
+                                    it
+                                )
+                            )
+                        }
+
                     }
                 }
                 is ChallengeCompleteResult.Failure -> {
                     MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(it.failure.title)
-                            .setMessage(it.failure.message)
-                            .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
-                            .show()
+                        .setTitle(it.failure.title)
+                        .setMessage(it.failure.message)
+                        .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
+                        .show()
                 }
             }
         }
@@ -102,19 +109,19 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
     private fun showBiometricUpgrade(onDone: () -> Unit) {
         if (requireContext().biometricUsable() && viewModel.challenge.value?.identity?.biometricOfferUpgrade == true) {
             MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.account_upgrade_biometric_title)
-                    .setMessage(R.string.account_upgrade_biometric_message)
-                    .setCancelable(false)
-                    .setNegativeButton(R.string.button_cancel) { _, _ ->
-                        viewModel.stopOfferBiometric()
-                    }
-                    .setPositiveButton(R.string.button_ok) { _, _ ->
-                        viewModel.upgradeBiometric(args.pin)
-                    }
-                    .setOnDismissListener {
-                        onDone.invoke()
-                    }
-                    .show()
+                .setTitle(R.string.account_upgrade_biometric_title)
+                .setMessage(R.string.account_upgrade_biometric_message)
+                .setCancelable(false)
+                .setNegativeButton(R.string.button_cancel) { _, _ ->
+                    viewModel.stopOfferBiometric()
+                }
+                .setPositiveButton(R.string.button_ok) { _, _ ->
+                    viewModel.upgradeBiometric(args.pin)
+                }
+                .setOnDismissListener {
+                    onDone.invoke()
+                }
+                .show()
         } else {
             onDone.invoke()
         }

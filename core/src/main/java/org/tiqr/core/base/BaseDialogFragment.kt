@@ -38,9 +38,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
-import dagger.hilt.android.EntryPointAccessors
 import org.tiqr.core.R
-import org.tiqr.data.viewmodel.ViewModelFactory
 
 /**
  * Base Dialog Fragment
@@ -52,9 +50,6 @@ abstract class BaseDialogFragment<B : ViewDataBinding> : DialogFragment(), Bindi
     @get:LayoutRes
     protected abstract val layout: Int
 
-    protected val factory: ViewModelFactory
-        get() = EntryPointAccessors.fromFragment(this, ViewModelFactory::class.java)
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NO_FRAME, R.style.AppTheme_Dialog)
 
@@ -63,13 +58,17 @@ abstract class BaseDialogFragment<B : ViewDataBinding> : DialogFragment(), Bindi
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return DataBindingUtil.inflate<B>(inflater, layout, container, false)
-                .apply {
-                    lifecycleOwner = viewLifecycleOwner
-                    _binding = this
-                }
-                .root
+            .apply {
+                lifecycleOwner = viewLifecycleOwner
+                _binding = this
+            }
+            .root
     }
 
     override fun onDestroyView() {

@@ -129,6 +129,7 @@ dependencies {
     implementation(libs.androidx.concurrent)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.savedstate)
     implementation(libs.androidx.localBroadcastManager)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
