@@ -29,26 +29,29 @@
 
 package org.tiqr.data.viewmodel
 
-import androidx.lifecycle.*
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import org.tiqr.data.model.SecretCredential
-import org.tiqr.data.model.AuthenticationChallenge
-import org.tiqr.data.model.AuthenticationCompleteRequest
-import org.tiqr.data.model.SecretType
-import org.tiqr.data.model.Identity
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.liveData
+import androidx.lifecycle.switchMap
+import dagger.hilt.android.lifecycle.HiltViewModel
+import org.tiqr.data.model.*
 import org.tiqr.data.repository.AuthenticationRepository
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * ViewModel for Authentication
  */
-class AuthenticationViewModel @AssistedInject constructor(
-        @Assisted override val _challenge: MutableLiveData<AuthenticationChallenge>,
-        override val repository: AuthenticationRepository,
-) : ChallengeViewModel<AuthenticationChallenge, AuthenticationRepository>() {
-    private val authenticationComplete = MutableLiveData<AuthenticationCompleteRequest<AuthenticationChallenge>>()
+@HiltViewModel
+class AuthenticationViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    override val repository: AuthenticationRepository,
+) : ChallengeViewModel<AuthenticationChallenge, AuthenticationRepository>(
+    savedStateHandle, "challenge"
+) {
+
+    private val authenticationComplete =
+        MutableLiveData<AuthenticationCompleteRequest<AuthenticationChallenge>>()
     val authenticate = authenticationComplete.switchMap {
         liveData {
             emit(repository.completeChallenge(it))
@@ -78,7 +81,8 @@ class AuthenticationViewModel @AssistedInject constructor(
      */
     fun authenticate(credential: SecretCredential) {
         challenge.value?.let {
-            authenticationComplete.value = AuthenticationCompleteRequest(it, credential.password, credential.type)
+            authenticationComplete.value =
+                AuthenticationCompleteRequest(it, credential.password, credential.type)
         } ?: Timber.e("Cannot authenticate, challenge is null")
     }
 
@@ -86,15 +90,9 @@ class AuthenticationViewModel @AssistedInject constructor(
      * Perform OTP generation
      */
     fun generateOTP(password: String) {
-        val type = if (password == SecretType.BIOMETRIC.key) SecretType.BIOMETRIC else SecretType.PIN
+        val type =
+            if (password == SecretType.BIOMETRIC.key) SecretType.BIOMETRIC else SecretType.PIN
         _otpGenerate.value = SecretCredential(password = password, type = type)
     }
 
-    /**
-     * Factory to inject the [AuthenticationChallenge] at runtime
-     */
-    @AssistedFactory
-    interface Factory : ChallengeViewModelFactory<AuthenticationChallenge> {
-        override fun create(challenge: MutableLiveData<AuthenticationChallenge>): AuthenticationViewModel
-    }
 }

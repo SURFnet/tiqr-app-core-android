@@ -32,15 +32,21 @@ package org.tiqr.core.enrollment
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentEnrollmentPinBinding
+import org.tiqr.data.viewmodel.EnrollmentViewModel
 
 /**
  * Fragment to enter the PIN code for the enrollment
  */
+@AndroidEntryPoint
 class EnrollmentPinFragment : BaseFragment<FragmentEnrollmentPinBinding>() {
+    private val viewModel by hiltNavGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav)
+
     @LayoutRes
     override val layout = R.layout.fragment_enrollment_pin
 
@@ -48,7 +54,15 @@ class EnrollmentPinFragment : BaseFragment<FragmentEnrollmentPinBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.pin.setConfirmListener { pin ->
-            findNavController().navigate(EnrollmentPinFragmentDirections.actionPinVerify(pin))
+            viewModel.challenge.value?.let {
+                findNavController().navigate(
+                    EnrollmentPinFragmentDirections.actionPinVerify(
+                        challenge = it,
+                        pin = pin,
+                    )
+                )
+            }
+
         }
     }
 }

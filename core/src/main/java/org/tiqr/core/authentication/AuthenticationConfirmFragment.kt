@@ -35,25 +35,22 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentAuthenticationConfirmBinding
 import org.tiqr.data.viewmodel.AuthenticationViewModel
-import org.tiqr.data.viewmodel.challengeViewModel
 
 /**
  * Fragment to review and confirm the authentication
  */
 @AndroidEntryPoint
-class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmBinding>() {
+class AuthenticationConfirmFragment : BaseFragment<FragmentAuthenticationConfirmBinding>() {
+    private val viewModel by hiltNavGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
     private val args by navArgs<AuthenticationConfirmFragmentArgs>()
-    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav) {
-        factory.challengeViewModel(args.challenge)
-    }
 
     @LayoutRes
     override val layout = R.layout.fragment_authentication_confirm
@@ -64,7 +61,11 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
         viewModel.challenge.value?.let { challenge ->
             if (challenge.hasMultipleIdentities && challenge.identity == null) {
                 setHasOptionsMenu(true)
-                findNavController().navigate(AuthenticationConfirmFragmentDirections.actionIdentity(cancellable = false))
+                findNavController().navigate(
+                    AuthenticationConfirmFragmentDirections.actionIdentity(
+                        cancellable = false
+                    )
+                )
             } else if (challenge.identity != null) {
                 viewModel.updateIdentity(challenge.identity!!)
             }
@@ -96,7 +97,11 @@ class AuthenticationConfirmFragment: BaseFragment<FragmentAuthenticationConfirmB
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.identity_pick -> {
-                findNavController().navigate(AuthenticationConfirmFragmentDirections.actionIdentity(cancellable = true))
+                findNavController().navigate(
+                    AuthenticationConfirmFragmentDirections.actionIdentity(
+                        cancellable = true
+                    )
+                )
                 true
             }
             else -> super.onOptionsItemSelected(item)

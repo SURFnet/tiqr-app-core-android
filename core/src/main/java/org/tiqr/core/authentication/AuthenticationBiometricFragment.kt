@@ -46,7 +46,7 @@ import org.tiqr.data.model.SecretType
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 
 @AndroidEntryPoint
-class AuthenticationBiometricFragment: BaseFragment<FragmentAuthenticationBiometricBinding>() {
+class AuthenticationBiometricFragment : BaseFragment<FragmentAuthenticationBiometricBinding>() {
     private val viewModel by hiltNavGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
 
     @LayoutRes
@@ -60,7 +60,11 @@ class AuthenticationBiometricFragment: BaseFragment<FragmentAuthenticationBiomet
 
             when (it) {
                 is ChallengeCompleteResult.Success -> {
-                    findNavController().navigate(AuthenticationPinFragmentDirections.actionSummary())
+                    viewModel.challenge.value?.let {
+                        findNavController().navigate(
+                            AuthenticationPinFragmentDirections.actionSummary(it)
+                        )
+                    }
                 }
                 is ChallengeCompleteResult.Failure -> {
                     val failure = it.failure
@@ -69,29 +73,31 @@ class AuthenticationBiometricFragment: BaseFragment<FragmentAuthenticationBiomet
                             AuthenticationCompleteFailure.Reason.UNKNOWN,
                             AuthenticationCompleteFailure.Reason.CONNECTION -> {
                                 findNavController().navigate(
-                                        AuthenticationBiometricFragmentDirections.actionFallback(SecretType.BIOMETRIC.key)
+                                    AuthenticationBiometricFragmentDirections.actionFallback(
+                                        SecretType.BIOMETRIC.key
+                                    )
                                 )
                             }
                             AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
                                 val remaining = failure.remainingAttempts
                                 MaterialAlertDialogBuilder(requireContext())
-                                        .setTitle(failure.title)
-                                        .setMessage(failure.message)
-                                        .setPositiveButton(R.string.button_ok) { dialog , _ ->
-                                            if (remaining != null && remaining == 0) {
-                                                // Blocked. Pop back to start.
-                                                findNavController().popBackStack()
-                                            }
-                                            dialog.dismiss()
+                                    .setTitle(failure.title)
+                                    .setMessage(failure.message)
+                                    .setPositiveButton(R.string.button_ok) { dialog, _ ->
+                                        if (remaining != null && remaining == 0) {
+                                            // Blocked. Pop back to start.
+                                            findNavController().popBackStack()
                                         }
-                                        .show()
+                                        dialog.dismiss()
+                                    }
+                                    .show()
                             }
                             else -> {
                                 MaterialAlertDialogBuilder(requireContext())
-                                        .setTitle(failure.title)
-                                        .setMessage(failure.message)
-                                        .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
-                                        .show()
+                                    .setTitle(failure.title)
+                                    .setMessage(failure.message)
+                                    .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
+                                    .show()
                             }
                         }
                     }
@@ -108,7 +114,9 @@ class AuthenticationBiometricFragment: BaseFragment<FragmentAuthenticationBiomet
     private fun showBiometric() {
         AuthenticationBiometricComponent(this, requireContext()) { result ->
             when (result) {
-                is AuthenticationBiometricComponent.BiometricResult.Success -> viewModel.authenticate(SecretCredential.biometric())
+                is AuthenticationBiometricComponent.BiometricResult.Success -> viewModel.authenticate(
+                    SecretCredential.biometric()
+                )
                 is AuthenticationBiometricComponent.BiometricResult.Cancel -> {
                     binding.progress.hide()
                     findNavController().navigate(AuthenticationBiometricFragmentDirections.actionPin())

@@ -30,24 +30,26 @@
 package org.tiqr.data.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.tiqr.data.model.EnrollmentChallenge
 import org.tiqr.data.model.EnrollmentCompleteRequest
 import org.tiqr.data.repository.EnrollmentRepository
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * ViewModel for Enrollment
  */
-class EnrollmentViewModel @AssistedInject constructor(
-        @Assisted override val _challenge: MutableLiveData<EnrollmentChallenge>,
-        override val repository: EnrollmentRepository
-) : ChallengeViewModel<EnrollmentChallenge, EnrollmentRepository>() {
-    private val enrollmentComplete = MutableLiveData<EnrollmentCompleteRequest<EnrollmentChallenge>>()
+@HiltViewModel
+class EnrollmentViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle, override val repository: EnrollmentRepository
+) : ChallengeViewModel<EnrollmentChallenge, EnrollmentRepository>(savedStateHandle, "challenge") {
+
+    private val enrollmentComplete =
+        MutableLiveData<EnrollmentCompleteRequest<EnrollmentChallenge>>()
     val enrollment = enrollmentComplete.switchMap {
         liveData {
             emit(repository.completeChallenge(it))
@@ -63,11 +65,4 @@ class EnrollmentViewModel @AssistedInject constructor(
         } ?: Timber.e("Cannot enroll, challenge is null")
     }
 
-    /**
-     * Factory to inject the [EnrollmentChallenge] at runtime
-     */
-    @AssistedFactory
-    interface Factory : ChallengeViewModelFactory<EnrollmentChallenge> {
-        override fun create(challenge: MutableLiveData<EnrollmentChallenge>): EnrollmentViewModel
-    }
 }

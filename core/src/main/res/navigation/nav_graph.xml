@@ -29,8 +29,7 @@
     <fragment
         android:id="@+id/scan"
         android:name="org.tiqr.core.scan.ScanFragment"
-        tools:layout="@layout/fragment_scan">
-    </fragment>
+        tools:layout="@layout/fragment_scan"></fragment>
 
     <action
         android:id="@+id/open_about"
@@ -107,7 +106,7 @@
                 android:id="@+id/action_fallback"
                 app:destination="@id/authentication_fallback"
                 app:popUpTo="@id/authentication_biometric"
-                app:popUpToInclusive="true"/>
+                app:popUpToInclusive="true" />
         </fragment>
 
         <fragment
@@ -125,7 +124,7 @@
                 android:id="@+id/action_fallback"
                 app:destination="@id/authentication_fallback"
                 app:popUpTo="@id/authentication_pin"
-                app:popUpToInclusive="true"/>
+                app:popUpToInclusive="true" />
         </fragment>
 
         <fragment
@@ -145,9 +144,13 @@
 
             <argument
                 android:name="pin"
-                app:argType="string"
                 android:defaultValue="@null"
+                app:argType="string"
                 app:nullable="true" />
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.AuthenticationChallenge"
+                app:nullable="false" />
         </fragment>
     </navigation>
 
@@ -177,6 +180,11 @@
             android:name="org.tiqr.core.enrollment.EnrollmentPinFragment"
             tools:layout="@layout/fragment_enrollment_pin">
 
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.EnrollmentChallenge"
+                app:nullable="false" />
+
             <action
                 android:id="@+id/action_pin_verify"
                 app:destination="@id/enrollment_pin_verify"
@@ -188,6 +196,11 @@
             android:id="@+id/enrollment_pin_verify"
             android:name="org.tiqr.core.enrollment.EnrollmentPinVerifyFragment"
             tools:layout="@layout/fragment_enrollment_pin_verify">
+
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.EnrollmentChallenge"
+                app:nullable="false" />
 
             <argument
                 android:name="pin"
@@ -205,7 +218,13 @@
         <fragment
             android:id="@+id/enrollment_summary"
             android:name="org.tiqr.core.enrollment.EnrollmentSummaryFragment"
-            tools:layout="@layout/fragment_enrollment_summary" />
+            tools:layout="@layout/fragment_enrollment_summary">
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.EnrollmentChallenge"
+                app:nullable="false" />
+
+        </fragment>
     </navigation>
 
     <navigation
@@ -233,7 +252,7 @@
         <fragment
             android:id="@+id/identity_detail"
             android:name="org.tiqr.core.identity.IdentityDetailFragment"
-            tools:layout="@layout/fragment_identity_detail" >
+            tools:layout="@layout/fragment_identity_detail">
 
             <argument
                 android:name="identity"
