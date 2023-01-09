@@ -41,7 +41,8 @@ import javax.inject.Inject
  * ViewModel for the identity screens (list & detail).
  */
 @HiltViewModel
-class IdentityViewModel @Inject constructor(private val repository: IdentityRepository) : ViewModel() {
+class IdentityViewModel @Inject constructor(private val repository: IdentityRepository) :
+    ViewModel() {
     private val identifier = MutableLiveData<String>()
     val identities = repository.allIdentities().asLiveData(viewModelScope.coroutineContext)
     val identity: LiveData<IdentityWithProvider?> = identifier.switchMap {
