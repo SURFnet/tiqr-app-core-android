@@ -33,16 +33,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.navigation.fragment.navArgs
-import org.tiqr.core.R
-import org.tiqr.core.databinding.FragmentIdentityDetailBinding
-import org.tiqr.data.viewmodel.IdentityViewModel
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
+import org.tiqr.core.databinding.FragmentIdentityDetailBinding
 import org.tiqr.core.util.extensions.biometricUsable
 import org.tiqr.data.model.Identity
+import org.tiqr.data.viewmodel.IdentityViewModel
 
 /**
  * Fragment to display the [Identity] details
@@ -79,12 +79,18 @@ class IdentityDetailFragment : BaseFragment<FragmentIdentityDetailBinding>() {
         }
 
         binding.buttonDelete.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.identity_delete_title)
-                    .setMessage(R.string.identity_delete_message)
-                    .setNegativeButton(R.string.button_cancel) { dialog, _ -> dialog.dismiss() }
-                    .setPositiveButton(R.string.button_delete) { _, _ -> viewModel.deleteIdentity(args.identity.identity) }
-                    .show()
+            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.identity_delete_title)
+                .setMessage(R.string.identity_delete_message)
+                .setNegativeButton(R.string.button_cancel) { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(R.string.button_delete) { _, _ ->
+                    deleteAndClose()
+                }.show()
         }
     }
+
+    private fun deleteAndClose() {
+        viewModel.deleteIdentity(args.identity.identity)
+        findNavController().popBackStack()
+    }
+
 }
