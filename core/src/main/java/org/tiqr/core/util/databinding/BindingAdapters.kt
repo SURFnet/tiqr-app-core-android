@@ -33,7 +33,6 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.text.Spanned
 import android.text.util.Linkify
 import android.view.LayoutInflater
@@ -47,11 +46,9 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.net.toUri
 import androidx.core.text.parseAsHtml
 import androidx.databinding.BindingAdapter
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
-import org.tiqr.core.MainNavDirections
 import org.tiqr.core.R
 import org.tiqr.core.util.extensions.toHtmlLink
 import org.tiqr.core.widget.recyclerview.DividerDecoration
@@ -183,7 +180,12 @@ fun ImageView.loadImage(url: String?) {
     }
     load(url) {
         crossfade(true)
-        listener(onError = { _, errorResult -> Timber.e(errorResult.throwable, "Error loading image from $url") })
+        listener(onError = { _, errorResult ->
+            Timber.e(
+                errorResult.throwable,
+                "Error loading image from $url"
+            )
+        })
     }
 }
 
