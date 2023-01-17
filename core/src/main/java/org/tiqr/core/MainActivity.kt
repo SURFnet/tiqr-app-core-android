@@ -29,7 +29,6 @@
 
 package org.tiqr.core
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
@@ -58,7 +57,6 @@ import org.tiqr.core.util.extensions.getNavController
 import org.tiqr.data.model.AuthenticationChallenge
 import org.tiqr.data.model.ChallengeParseResult
 import org.tiqr.data.model.EnrollmentChallenge
-import org.tiqr.data.model.TiqrConfig
 import org.tiqr.data.viewmodel.MainViewModel
 import timber.log.Timber
 
@@ -76,8 +74,6 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
-
-        TiqrConfig.initialize(this)
 
         navController = getNavController(R.id.nav_host_fragment).apply {
             setSupportActionBar(binding.toolbar)
@@ -214,7 +210,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
     /**
      * Get the current device token from Firebase messaging
      */
-    private suspend inline fun getDeviceToken() : String? {
+    private suspend inline fun getDeviceToken(): String? {
         return try {
             FirebaseMessaging.getInstance().token.await()
         } catch (ex: Exception) {
