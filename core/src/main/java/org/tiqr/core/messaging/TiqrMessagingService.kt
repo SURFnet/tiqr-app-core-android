@@ -125,6 +125,7 @@ class TiqrMessagingService : FirebaseMessagingService() {
                 .setContentText(text)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(text))
                 .setDefaults(Notification.DEFAULT_ALL)
+                .setColor(resources.getColor(R.color.primaryColor))
                 .build()
                 .apply {
                     notificationManager.notify(0, this)
