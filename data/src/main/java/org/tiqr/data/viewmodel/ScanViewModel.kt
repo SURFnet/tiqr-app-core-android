@@ -34,12 +34,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
+import com.squareup.moshi.Moshi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.tiqr.data.R
-import org.tiqr.data.model.ChallengeParseResult
-import org.tiqr.data.model.ParseFailure
+import org.tiqr.data.model.*
 import org.tiqr.data.repository.AuthenticationRepository
 import org.tiqr.data.repository.EnrollmentRepository
+import java.net.URLEncoder
 import javax.inject.Inject
 
 /**
@@ -47,9 +48,10 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ScanViewModel @Inject constructor(
-        private val resources: Resources,
-        private val enroll: EnrollmentRepository,
-        private val auth: AuthenticationRepository
+    private val resources: Resources,
+    private val enroll: EnrollmentRepository,
+    private val auth: AuthenticationRepository,
+    private val moshi: Moshi
 ) : ViewModel() {
     private val rawChallengeObserver = MutableLiveData<String>()
     val challenge = rawChallengeObserver.switchMap { rawChallenge ->
@@ -57,13 +59,12 @@ class ScanViewModel @Inject constructor(
             when {
                 enroll.isValidChallenge(rawChallenge) -> enroll.parseChallenge(rawChallenge)
                 auth.isValidChallenge(rawChallenge) -> auth.parseChallenge(rawChallenge)
-                else ->
-                    ChallengeParseResult.failure(
-                            ParseFailure(
-                                    title = resources.getString(R.string.error_qr_unknown_title),
-                                    message = resources.getString(R.string.error_qr_unknown)
-                            )
+                else -> ChallengeParseResult.failure(
+                    ParseFailure(
+                        title = resources.getString(R.string.error_qr_unknown_title),
+                        message = resources.getString(R.string.error_qr_unknown)
                     )
+                )
             }.run {
                 emit(this)
             }
@@ -75,5 +76,19 @@ class ScanViewModel @Inject constructor(
      */
     fun parseChallenge(rawChallenge: String) {
         rawChallengeObserver.value = rawChallenge
+    }
+
+    fun encodeChallenge(scanResult: Challenge): String? {
+        val asJson = when (scanResult) {
+            is EnrollmentChallenge -> {
+                val adapter = moshi.adapter(EnrollmentChallenge::class.java)
+                adapter.toJson(scanResult)
+            }
+            is AuthenticationChallenge -> {
+                val adapter = moshi.adapter(AuthenticationChallenge::class.java)
+                adapter.toJson(scanResult)
+            }
+        }
+        return URLEncoder.encode(asJson, Charsets.UTF_8.toString())
     }
 }

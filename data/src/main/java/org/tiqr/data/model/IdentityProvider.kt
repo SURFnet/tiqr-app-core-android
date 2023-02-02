@@ -34,6 +34,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -45,6 +46,7 @@ import kotlinx.parcelize.Parcelize
         ]
 )
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class IdentityProvider(
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "_id")

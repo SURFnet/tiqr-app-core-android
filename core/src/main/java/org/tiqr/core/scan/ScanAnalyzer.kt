@@ -57,16 +57,12 @@ class ScanAnalyzer(
         private val result: (String) -> Unit
 ) : ImageAnalysis.Analyzer {
     private val lifecycleScope = lifecycleOwner.lifecycleScope
-    private val detector: BarcodeScanner
-
-    init {
-        detector = BarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .build()
-                .run {
-                    BarcodeScanning.getClient(this)
-                }
-    }
+    private val detector: BarcodeScanner = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+            .build()
+            .run {
+                BarcodeScanning.getClient(this)
+            }
 
     @ExperimentalGetImage
     override fun analyze(image: ImageProxy) {
