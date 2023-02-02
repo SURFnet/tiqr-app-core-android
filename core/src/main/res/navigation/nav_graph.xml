@@ -83,12 +83,21 @@
                 android:name="cancellable"
                 android:defaultValue="false"
                 app:argType="boolean" />
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.AuthenticationChallenge"
+                app:nullable="false" />
         </dialog>
 
         <fragment
             android:id="@+id/authentication_biometric"
             android:name="org.tiqr.core.authentication.AuthenticationBiometricFragment"
             tools:layout="@layout/fragment_authentication_biometric">
+
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.AuthenticationChallenge"
+                app:nullable="false" />
 
             <action
                 android:id="@+id/action_summary"
@@ -114,6 +123,11 @@
             android:name="org.tiqr.core.authentication.AuthenticationPinFragment"
             tools:layout="@layout/fragment_authentication_pin">
 
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.AuthenticationChallenge"
+                app:nullable="false" />
+
             <action
                 android:id="@+id/action_summary"
                 app:destination="@id/authentication_summary"
@@ -135,6 +149,11 @@
             <argument
                 android:name="pin"
                 app:argType="string" />
+            <argument
+                android:name="challenge"
+                app:argType="org.tiqr.data.model.AuthenticationChallenge"
+                app:nullable="false" />
+
         </fragment>
 
         <fragment

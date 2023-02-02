@@ -83,9 +83,14 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
                         when (failure.reason) {
                             AuthenticationCompleteFailure.Reason.UNKNOWN,
                             AuthenticationCompleteFailure.Reason.CONNECTION -> {
-                                findNavController().navigate(
-                                    AuthenticationPinFragmentDirections.actionFallback(binding.pin.currentPin)
-                                )
+                                viewModel.challenge.value?.let { challenge ->
+                                    findNavController().navigate(
+                                        AuthenticationPinFragmentDirections.actionFallback(
+                                            pin = binding.pin.currentPin,
+                                            challenge = challenge
+                                        )
+                                    )
+                                }
                             }
                             AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
                                 val remaining = failure.remainingAttempts

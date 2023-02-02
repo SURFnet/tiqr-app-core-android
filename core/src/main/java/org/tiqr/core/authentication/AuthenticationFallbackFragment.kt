@@ -31,6 +31,7 @@ package org.tiqr.core.authentication
 
 import android.os.Bundle
 import android.view.View
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
@@ -47,7 +48,7 @@ import org.tiqr.data.viewmodel.AuthenticationViewModel
  */
 @AndroidEntryPoint
 class AuthenticationFallbackFragment : BaseFragment<FragmentAuthenticationFallbackBinding>() {
-    private val viewModel by navGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
+    private val viewModel by hiltNavGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
     private val args by navArgs<AuthenticationFallbackFragmentArgs>()
 
     override val layout = R.layout.fragment_authentication_fallback
@@ -68,9 +69,9 @@ class AuthenticationFallbackFragment : BaseFragment<FragmentAuthenticationFallba
             when (it) {
                 is ChallengeCompleteOtpResult.Failure -> {
                     MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(it.failure.title)
-                            .setMessage(it.failure.message)
-                            .show()
+                        .setTitle(it.failure.title)
+                        .setMessage(it.failure.message)
+                        .show()
                 }
                 else -> {
                     // Handled inside binding
