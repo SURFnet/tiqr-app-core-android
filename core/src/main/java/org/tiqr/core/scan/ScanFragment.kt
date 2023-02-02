@@ -60,10 +60,10 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
 
         binding.viewFinder.doOnLayout {
             scanComponent = ScanComponent(
-                    context = requireContext(),
-                    lifecycleOwner = viewLifecycleOwner,
-                    viewFinder = binding.viewFinder,
-                    viewFinderRatio = it.height.toFloat() / it.width.toFloat()
+                context = requireContext(),
+                lifecycleOwner = viewLifecycleOwner,
+                viewFinder = binding.viewFinder,
+                viewFinderRatio = it.height.toFloat() / it.width.toFloat()
             ) { result ->
                 binding.progress.show()
                 viewModel.parseChallenge(result)

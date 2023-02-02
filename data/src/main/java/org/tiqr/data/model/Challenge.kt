@@ -30,6 +30,7 @@
 package org.tiqr.data.model
 
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 import org.tiqr.data.BuildConfig
 
@@ -47,6 +48,7 @@ sealed class Challenge {
  * The result for the [EnrollmentChallenge]
  */
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class EnrollmentChallenge(
         override val protocolVersion: Int = TiqrConfig.protocolVersion,
         override val identityProvider: IdentityProvider,
@@ -60,6 +62,7 @@ data class EnrollmentChallenge(
  * The result for the [AuthenticationChallenge]
  */
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class AuthenticationChallenge(
         override val protocolVersion: Int = TiqrConfig.protocolVersion,
         override val identityProvider: IdentityProvider,

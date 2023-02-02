@@ -31,6 +31,7 @@ package org.tiqr.data.model
 
 import android.os.Parcelable
 import androidx.room.*
+import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -51,7 +52,9 @@ import kotlinx.parcelize.Parcelize
                 )
         ]
 )
+
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class Identity(
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "_id")
