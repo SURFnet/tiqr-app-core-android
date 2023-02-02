@@ -42,6 +42,7 @@ import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentEnrollmentPinVerifyBinding
 import org.tiqr.core.util.extensions.biometricUsable
 import org.tiqr.data.model.ChallengeCompleteResult
+import org.tiqr.data.model.EnrollmentCompleteFailure
 import org.tiqr.data.viewmodel.EnrollmentViewModel
 
 /**
@@ -93,9 +94,15 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
                     }
                 }
                 is ChallengeCompleteResult.Failure -> {
+                    val failure = it.failure
+                    val reason = if (failure is EnrollmentCompleteFailure) {
+                        "(${failure.reason.name})"
+                    } else {
+                        ""
+                    }
                     MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(it.failure.title)
-                        .setMessage(it.failure.message)
+                        .setTitle(failure.title)
+                        .setMessage(failure.message + reason)
                         .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
                         .show()
                 }
