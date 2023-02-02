@@ -60,11 +60,11 @@ import kotlin.math.min
  * The processing of the camera image to a QR code is delegated to [ScanAnalyzer].
  */
 class ScanComponent(
-        private val context: Context,
-        private val lifecycleOwner: LifecycleOwner,
-        private val viewFinder: PreviewView,
-        private val viewFinderRatio: Float,
-        private val scanResult: (result: String) -> Unit
+    private val context: Context,
+    private val lifecycleOwner: LifecycleOwner,
+    private val viewFinder: PreviewView,
+    viewFinderRatio: Float,
+    private val scanResult: (result: String) -> Unit,
 ) : DefaultLifecycleObserver {
     companion object {
         private const val BEEP_VOLUME = 0.1f
@@ -97,7 +97,7 @@ class ScanComponent(
     private val lifecycleScope = lifecycleOwner.lifecycleScope
 
     private val broadcastManager: LocalBroadcastManager = LocalBroadcastManager.getInstance(context)
-    private val keyReceiver = ScanKeyEventsReceiver { enable -> camera.cameraControl.enableTorch(enable) }
+    private val keyReceiver = ScanKeyEventsReceiver { enable -> toggleTorch(enable) }
 
     init {
         lifecycleOwner.lifecycle.addObserver(this)
@@ -111,9 +111,18 @@ class ScanComponent(
     /**
      * Initialize the [ProcessCameraProvider]
      */
-    private suspend fun initCameraProvider(): ProcessCameraProvider {
-        return withContext(Dispatchers.Default) {
+    private suspend fun initCameraProvider(): ProcessCameraProvider =
+        withContext(Dispatchers.Default) {
             ProcessCameraProvider.getInstance(context).await()
+        }
+
+    /**
+     * Allow toggling the torch for the camera from outside the library component.
+     * */
+    @Suppress("MemberVisibilityCanBePrivate")
+    fun toggleTorch(enable: Boolean) {
+        if (this::camera.isInitialized) {
+            camera.cameraControl.enableTorch(enable)
         }
     }
 
