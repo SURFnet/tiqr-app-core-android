@@ -104,9 +104,11 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
                                     .setPositiveButton(R.string.button_ok) { dialog, _ ->
                                         if (remaining != null && remaining == 0) {
                                             // Blocked. Pop back to start.
+                                            dialog.dismiss()
                                             findNavController().popBackStack()
+                                        } else {
+                                            dialog.dismiss()
                                         }
-                                        dialog.dismiss()
                                     }
                                     .show()
                             }
