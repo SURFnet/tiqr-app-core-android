@@ -50,7 +50,6 @@ import org.tiqr.data.viewmodel.AuthenticationViewModel
 @AndroidEntryPoint
 class AuthenticationConfirmFragment : BaseFragment<FragmentAuthenticationConfirmBinding>() {
     private val viewModel by hiltNavGraphViewModels<AuthenticationViewModel>(R.id.authentication_nav)
-    private val args by navArgs<AuthenticationConfirmFragmentArgs>()
 
     @LayoutRes
     override val layout = R.layout.fragment_authentication_confirm
@@ -63,6 +62,7 @@ class AuthenticationConfirmFragment : BaseFragment<FragmentAuthenticationConfirm
                 setHasOptionsMenu(true)
                 findNavController().navigate(
                     AuthenticationConfirmFragmentDirections.actionIdentity(
+                        challenge = challenge,
                         cancellable = false
                     )
                 )
@@ -86,10 +86,20 @@ class AuthenticationConfirmFragment : BaseFragment<FragmentAuthenticationConfirm
         }
 
         binding.buttonOk.setOnClickListener {
-            if (viewModel.challenge.value?.identity?.biometricInUse == true) {
-                findNavController().navigate(AuthenticationConfirmFragmentDirections.actionBiometric())
-            } else {
-                findNavController().navigate(AuthenticationConfirmFragmentDirections.actionPin())
+            viewModel.challenge.value?.let { challenge ->
+                if (viewModel.challenge.value?.identity?.biometricInUse == true) {
+                    findNavController().navigate(
+                        AuthenticationConfirmFragmentDirections.actionBiometric(
+                            challenge
+                        )
+                    )
+                } else {
+                    findNavController().navigate(
+                        AuthenticationConfirmFragmentDirections.actionPin(
+                            challenge
+                        )
+                    )
+                }
             }
         }
     }
@@ -97,11 +107,14 @@ class AuthenticationConfirmFragment : BaseFragment<FragmentAuthenticationConfirm
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.identity_pick -> {
-                findNavController().navigate(
-                    AuthenticationConfirmFragmentDirections.actionIdentity(
-                        cancellable = true
+                viewModel.challenge.value?.let { challenge ->
+                    findNavController().navigate(
+                        AuthenticationConfirmFragmentDirections.actionIdentity(
+                            challenge = challenge,
+                            cancellable = true
+                        )
                     )
-                )
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

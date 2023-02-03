@@ -83,9 +83,14 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
                         when (failure.reason) {
                             AuthenticationCompleteFailure.Reason.UNKNOWN,
                             AuthenticationCompleteFailure.Reason.CONNECTION -> {
-                                findNavController().navigate(
-                                    AuthenticationPinFragmentDirections.actionFallback(binding.pin.currentPin)
-                                )
+                                viewModel.challenge.value?.let { challenge ->
+                                    findNavController().navigate(
+                                        AuthenticationPinFragmentDirections.actionFallback(
+                                            pin = binding.pin.currentPin,
+                                            challenge = challenge
+                                        )
+                                    )
+                                }
                             }
                             AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
                                 val remaining = failure.remainingAttempts
@@ -99,9 +104,11 @@ class AuthenticationPinFragment : BaseFragment<FragmentAuthenticationPinBinding>
                                     .setPositiveButton(R.string.button_ok) { dialog, _ ->
                                         if (remaining != null && remaining == 0) {
                                             // Blocked. Pop back to start.
+                                            dialog.dismiss()
                                             findNavController().popBackStack()
+                                        } else {
+                                            dialog.dismiss()
                                         }
-                                        dialog.dismiss()
                                     }
                                     .show()
                             }

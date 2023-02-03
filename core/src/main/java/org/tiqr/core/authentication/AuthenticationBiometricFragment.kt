@@ -55,14 +55,14 @@ class AuthenticationBiometricFragment : BaseFragment<FragmentAuthenticationBiome
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.authenticate.observe(viewLifecycleOwner) {
+        viewModel.authenticate.observe(viewLifecycleOwner) { it ->
             binding.progress.hide()
 
             when (it) {
                 is ChallengeCompleteResult.Success -> {
-                    viewModel.challenge.value?.let {
+                    viewModel.challenge.value?.let { challenge ->
                         findNavController().navigate(
-                            AuthenticationPinFragmentDirections.actionSummary(it)
+                            AuthenticationPinFragmentDirections.actionSummary(challenge)
                         )
                     }
                 }
@@ -72,11 +72,13 @@ class AuthenticationBiometricFragment : BaseFragment<FragmentAuthenticationBiome
                         when (failure.reason) {
                             AuthenticationCompleteFailure.Reason.UNKNOWN,
                             AuthenticationCompleteFailure.Reason.CONNECTION -> {
-                                findNavController().navigate(
-                                    AuthenticationBiometricFragmentDirections.actionFallback(
-                                        SecretType.BIOMETRIC.key
+                                viewModel.challenge.value?.let { challenge ->
+                                    findNavController().navigate(
+                                        AuthenticationBiometricFragmentDirections.actionFallback(
+                                            pin = SecretType.BIOMETRIC.key, challenge = challenge
+                                        )
                                     )
-                                )
+                                }
                             }
                             AuthenticationCompleteFailure.Reason.INVALID_RESPONSE -> {
                                 val remaining = failure.remainingAttempts
@@ -119,11 +121,23 @@ class AuthenticationBiometricFragment : BaseFragment<FragmentAuthenticationBiome
                 )
                 is AuthenticationBiometricComponent.BiometricResult.Cancel -> {
                     binding.progress.hide()
-                    findNavController().navigate(AuthenticationBiometricFragmentDirections.actionPin())
+                    viewModel.challenge.value?.let { challenge ->
+                        findNavController().navigate(
+                            AuthenticationBiometricFragmentDirections.actionPin(
+                                challenge
+                            )
+                        )
+                    }
                 }
                 is AuthenticationBiometricComponent.BiometricResult.Fail -> {
                     binding.progress.hide()
-                    findNavController().navigate(AuthenticationBiometricFragmentDirections.actionPin())
+                    viewModel.challenge.value?.let { challenge ->
+                        findNavController().navigate(
+                            AuthenticationBiometricFragmentDirections.actionPin(
+                                challenge
+                            )
+                        )
+                    }
                 }
             }
         }.run {
