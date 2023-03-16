@@ -335,7 +335,7 @@ class EnrollmentRepository(
                     EnrollmentCompleteFailure(
                         reason = EnrollmentCompleteFailure.Reason.UNKNOWN,
                         title = resources.getString(R.string.error_enroll_title),
-                        message = resources.getString(R.string.error_enroll_invalid_response)
+                        message = e::class.simpleName + " : " + e.message
                     )
             }.run {
                 ChallengeCompleteResult.failure(this)
