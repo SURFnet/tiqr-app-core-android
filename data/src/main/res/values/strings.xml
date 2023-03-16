@@ -34,6 +34,7 @@
     <string name="error_auth_connect_error">Cannot connect to the authentication server.</string>
 
     <string name="error_auth_invalid_key">Unable to log in. Invalid key.</string>
+    <string name="error_auth_invalid_keystore">Unable to log in. Cannot access secure storage.</string>
     <string name="error_auth_invalid_challenge">Unable to log in. Invalid challenge.</string>
 
     <string name="error_auth_invalid_protocol">Invalid response protocol (%s). Please contact the website administrator.</string>

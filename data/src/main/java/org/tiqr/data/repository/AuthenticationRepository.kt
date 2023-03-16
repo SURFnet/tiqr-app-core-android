@@ -34,19 +34,13 @@ import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.tiqr.data.BuildConfig
 import org.tiqr.data.R
 import org.tiqr.data.algorithm.Ocra
 import org.tiqr.data.algorithm.Ocra.OcraException
 import org.tiqr.data.api.TiqrApi
 import org.tiqr.data.api.response.ApiResponse
 import org.tiqr.data.model.*
-import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_ACCOUNT_BLOCKED
-import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_INVALID_CHALLENGE
-import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_INVALID_REQUEST
-import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_INVALID_RESPONSE
-import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_INVALID_USER_ID
-import org.tiqr.data.model.AuthenticationResponse.Code.AUTH_RESULT_SUCCESS
+import org.tiqr.data.model.AuthenticationResponse.Code.*
 import org.tiqr.data.repository.base.ChallengeRepository
 import org.tiqr.data.security.SecurityFeaturesException
 import org.tiqr.data.service.DatabaseService
@@ -57,6 +51,7 @@ import org.tiqr.data.util.extension.toHexString
 import timber.log.Timber
 import java.io.IOException
 import java.security.InvalidKeyException
+import java.security.KeyStoreException
 import java.util.*
 
 /**
@@ -207,6 +202,12 @@ class AuthenticationRepository(
                             reason = AuthenticationCompleteFailure.Reason.INVALID_CHALLENGE,
                             title = resources.getString(R.string.error_auth_title),
                             message = resources.getString(R.string.error_auth_invalid_challenge)
+                    )
+                is KeyStoreException ->
+                    AuthenticationCompleteFailure(
+                        reason = AuthenticationCompleteFailure.Reason.SECURITY,
+                        title = resources.getString(R.string.error_auth_title),
+                        message = resources.getString(R.string.error_auth_invalid_keystore)
                     )
                 is InvalidKeyException ->
                     AuthenticationCompleteFailure(
@@ -385,6 +386,12 @@ class AuthenticationRepository(
                             reason = AuthenticationCompleteFailure.Reason.INVALID_CHALLENGE,
                             title = resources.getString(R.string.error_auth_title),
                             message = resources.getString(R.string.error_auth_invalid_challenge)
+                    )
+                is KeyStoreException ->
+                    AuthenticationCompleteFailure(
+                        reason = AuthenticationCompleteFailure.Reason.SECURITY,
+                        title = resources.getString(R.string.error_auth_title),
+                        message = resources.getString(R.string.error_auth_invalid_keystore)
                     )
                 is SecurityFeaturesException ->
                     AuthenticationCompleteFailure(
