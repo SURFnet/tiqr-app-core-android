@@ -86,11 +86,12 @@ sealed class ChallengeCompleteFailure : ChallengeFailure()
  */
 data class EnrollmentCompleteFailure(
         val reason: Reason = Reason.UNKNOWN,
+        val error: Throwable,
         override val title: String,
         override val message: String
 ) : ChallengeCompleteFailure() {
     enum class Reason {
-        UNKNOWN, CONNECTION, INVALID_RESPONSE
+        UNKNOWN, CONNECTION, INVALID_RESPONSE, SECURITY,
     }
 }
 
@@ -106,6 +107,6 @@ data class AuthenticationCompleteFailure(
 ) : ChallengeCompleteFailure() {
     enum class Reason {
         UNKNOWN, CONNECTION, DEVICE_INCOMPATIBLE, INVALID_CHALLENGE, INVALID_REQUEST, INVALID_RESPONSE,
-        INVALID_USER, ACCOUNT_BLOCKED, ACCOUNT_TEMPORARY_BLOCKED
+        INVALID_USER, ACCOUNT_BLOCKED, ACCOUNT_TEMPORARY_BLOCKED, SECURITY
     }
 }

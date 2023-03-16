@@ -61,16 +61,13 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
 
         binding.pin.setConfirmListener { pin ->
             if (pin != args.pin) {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(R.string.enroll_pin_verify_no_match_title)
-                    .setMessage(R.string.enroll_pin_verify_no_match_message)
-                    .setCancelable(false)
+                MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.enroll_pin_verify_no_match_title)
+                    .setMessage(R.string.enroll_pin_verify_no_match_message).setCancelable(false)
                     .setNegativeButton(R.string.button_cancel) { _, _ -> findNavController().popBackStack() }
                     .setPositiveButton(R.string.button_retry) { dialog, _ ->
                         binding.pin.clear()
                         dialog.dismiss()
-                    }
-                    .show()
+                    }.show()
             } else {
                 binding.progress.show()
                 viewModel.enroll(pin)
@@ -95,14 +92,14 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
                 }
                 is ChallengeCompleteResult.Failure -> {
                     val failure = it.failure
-                    val reason = if (failure is EnrollmentCompleteFailure) {
-                        "(${failure.reason.name})"
+                    val extraInfo = if (failure is EnrollmentCompleteFailure) {
+                        "(${failure.reason.name}: ${failure.error::class.java.simpleName} / ${failure.error.localizedMessage})"
                     } else {
                         ""
                     }
-                    MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(failure.title)
-                        .setMessage(failure.message + reason)
+
+                    MaterialAlertDialogBuilder(requireContext()).setTitle(failure.title)
+                        .setMessage(failure.message + extraInfo)
                         .setPositiveButton(R.string.button_ok) { dialog, _ -> dialog.dismiss() }
                         .show()
                 }
@@ -115,20 +112,15 @@ class EnrollmentPinVerifyFragment : BaseFragment<FragmentEnrollmentPinVerifyBind
      */
     private fun showBiometricUpgrade(onDone: () -> Unit) {
         if (requireContext().biometricUsable() && viewModel.challenge.value?.identity?.biometricOfferUpgrade == true) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.account_upgrade_biometric_title)
-                .setMessage(R.string.account_upgrade_biometric_message)
-                .setCancelable(false)
+            MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.account_upgrade_biometric_title)
+                .setMessage(R.string.account_upgrade_biometric_message).setCancelable(false)
                 .setNegativeButton(R.string.button_cancel) { _, _ ->
                     viewModel.stopOfferBiometric()
-                }
-                .setPositiveButton(R.string.button_ok) { _, _ ->
+                }.setPositiveButton(R.string.button_ok) { _, _ ->
                     viewModel.upgradeBiometric(args.pin)
-                }
-                .setOnDismissListener {
+                }.setOnDismissListener {
                     onDone.invoke()
-                }
-                .show()
+                }.show()
         } else {
             onDone.invoke()
         }
