@@ -24,6 +24,7 @@
 
     <string name="error_enroll_saving_identity_provider">Failed to store identity provider. Please contact support.</string>
     <string name="error_enroll_saving_identity">Failed to store identity. Please contact support.</string>
+    <string name="error_enroll_saving_secrets">Failed to store secrets. The app cannot recover from this error, please clear your app data and try again.</string>
 
     <!-- Errors Authentication -->
     <string name="error_auth_title">Login failed</string>

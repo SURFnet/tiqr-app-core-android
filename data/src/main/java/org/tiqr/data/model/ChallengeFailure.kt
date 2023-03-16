@@ -86,11 +86,12 @@ sealed class ChallengeCompleteFailure : ChallengeFailure()
  */
 data class EnrollmentCompleteFailure(
         val reason: Reason = Reason.UNKNOWN,
+        val error: Throwable,
         override val title: String,
         override val message: String
 ) : ChallengeCompleteFailure() {
     enum class Reason {
-        UNKNOWN, CONNECTION, INVALID_RESPONSE
+        UNKNOWN, CONNECTION, INVALID_RESPONSE, SECURITY,
     }
 }
 
