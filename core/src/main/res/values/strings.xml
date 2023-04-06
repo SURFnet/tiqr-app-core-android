@@ -54,6 +54,7 @@
     <string name="about_label_provided_by">Provided by:</string>
     <string name="about_label_developed_by">Developed by:</string>
     <string name="about_label_interaction_by">Interaction design:</string>
+    <string name="about_label_security_capabilities">Security capabilities:</string>
 
     <!-- Enroll (Confirm) -->
     <string name="enroll_confirm_title">Confirm account activation</string>

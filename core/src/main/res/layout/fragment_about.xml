@@ -5,6 +5,7 @@
     tools:context="org.tiqr.core.about.AboutFragment">
 
     <data>
+
         <import type="org.tiqr.core.util.Urls" />
     </data>
 
@@ -34,10 +35,10 @@
                 app:openBrowser="@{@string/app_url}">
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginBottom="15dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/app_version_text"
@@ -51,11 +52,11 @@
                         tools:text="tiqr &#8226; v4.0.0" />
 
                     <ImageView
-                        android:adjustViewBounds="true"
-                        android:layout_gravity="center_horizontal"
                         style="@style/AboutAppIcon"
                         android:layout_width="120dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:adjustViewBounds="true" />
 
                 </LinearLayout>
 
@@ -73,10 +74,10 @@
 
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_marginBottom="15dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/provided_provided_by"
@@ -89,11 +90,11 @@
                         android:textAppearance="@style/AppTheme.TextAppearance.Label" />
 
                     <ImageView
-                        android:adjustViewBounds="true"
-                        android:layout_gravity="center_horizontal"
                         style="@style/AboutSurfIcon"
                         android:layout_width="120dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:adjustViewBounds="true" />
 
                 </LinearLayout>
 
@@ -140,6 +141,29 @@
                     android:textAppearance="@style/AppTheme.TextAppearance.Label"
                     app:drawableBottomCompat="@drawable/logo_keen_design" />
             </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/security"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardElevation="6dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/about_label_security_capabilities"
+                    android:textAppearance="@style/AppTheme.TextAppearance.Label" />
+
+                <TextView
+                    android:id="@+id/security_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
