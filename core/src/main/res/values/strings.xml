@@ -54,6 +54,7 @@
     <string name="about_label_provided_by">Provided by:</string>
     <string name="about_label_developed_by">Developed by:</string>
     <string name="about_label_interaction_by">Interaction design:</string>
+    <string name="about_label_security_capabilities">Security capabilities:</string>
 
     <!-- Enroll (Confirm) -->
     <string name="enroll_confirm_title">Confirm account activation</string>
@@ -119,4 +120,5 @@
     <!-- Notification channel -->
     <string name="notification_channel_name">Messages</string>
     <string name="notification_channel_description">Notifications for messages from tiqr</string>
+    <string name="about_copied" tools:ignore="ExtraTranslation">Copied</string>
 </resources>
