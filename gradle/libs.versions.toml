@@ -1,8 +1,8 @@
 [versions]
-android-sdk-compile = "33"
-android-sdk-target = "33"
+android-sdk-compile = "34"
+android-sdk-target = "34"
 android-sdk-min = "24"
-android-buildTools = "33.0.0"
+android-buildTools = "34.0.0"
 
 kotlin = "1.8.0"
 coroutines = "1.6.4"
@@ -18,7 +18,7 @@ retrofit = "2.9.0"
 moshi = "1.14.0"
 
 [libraries]
-android-gradle = "com.android.tools.build:gradle:7.4.0"
+android-gradle = "com.android.tools.build:gradle:7.4.2"
 
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

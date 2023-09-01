@@ -72,7 +72,7 @@ class ScanFrameOverlay : View {
     private val framePath: Path = Path()
     private val frameCornerSize: Int = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50f, context.resources.displayMetrics).toInt()
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         val frameRect = frameRect ?: return
@@ -80,7 +80,7 @@ class ScanFrameOverlay : View {
 
         val (left, top, right, bottom) = frameRect
 
-        canvas?.apply {
+        canvas.apply {
             // Draw mask around frame
             drawPath(maskPath, maskPaint)
 
