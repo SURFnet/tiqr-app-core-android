@@ -29,11 +29,9 @@
 
 package org.tiqr.core.scan
 
-import android.graphics.Rect
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import androidx.core.graphics.toRect
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.mlkit.vision.barcode.BarcodeScanner
@@ -45,58 +43,33 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
-import java.lang.Exception
-import kotlin.math.roundToInt
 
 /**
  * Analyzer to detect QR codes using Firebase ML-Kit
  */
 class ScanAnalyzer(
-        lifecycleOwner: LifecycleOwner,
-        private val viewFinderRatio: Float,
-        private val result: (String) -> Unit
+    lifecycleOwner: LifecycleOwner,
+    private val result: (String) -> Unit
 ) : ImageAnalysis.Analyzer {
     private val lifecycleScope = lifecycleOwner.lifecycleScope
     private val detector: BarcodeScanner = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-            .build()
-            .run {
-                BarcodeScanning.getClient(this)
-            }
+        .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+        .build()
+        .run {
+            BarcodeScanning.getClient(this)
+        }
 
     @ExperimentalGetImage
     override fun analyze(image: ImageProxy) {
         image.image?.let { scanned ->
             lifecycleScope.launch {
                 val rotation = image.imageInfo.rotationDegrees
-                val isPortrait = rotation.isPortrait()
-                val width = if (isPortrait) scanned.height else scanned.width
-                val height = if (isPortrait) scanned.width else scanned.height
-
                 try {
                     detector.process(InputImage.fromMediaImage(scanned, rotation)).await()
-                            .run {
-                                val barcode = firstOrNull() ?: return@run
-                                val barcodeBox = barcode.boundingBox
-                                val centerBox: Rect? = if (isPortrait) {
-                                    val cropped = (height / viewFinderRatio).roundToInt()
-                                    getCenterBoxFrame(cropped, height)?.toRect()?.apply {
-                                        offset((width - cropped) / 2, 0)
-                                    }
-                                } else {
-                                    val cropped = (width / viewFinderRatio).roundToInt()
-                                    getCenterBoxFrame(width, cropped)?.toRect()?.apply {
-                                        offset((height - cropped) / 2, 0)
-                                    }
-                                }
-
-                                if (centerBox != null && barcodeBox != null) {
-                                    if (centerBox.contains(barcodeBox)) {
-                                        // Only process barcode inside center box
-                                        barcode.displayValue?.run(result)
-                                    }
-                                }
-                            }
+                        .run {
+                            val barcode: Barcode = firstOrNull() ?: return@run
+                            barcode.displayValue?.run(result)
+                        }
                 } catch (e: Exception) {
                     if (e !is CancellationException) {
                         Timber.e(e, "Error analyzing image")
@@ -105,16 +78,6 @@ class ScanAnalyzer(
                     image.close()
                 }
             }
-        }
-    }
-
-    /**
-     * Detect if the orientation is portrait.
-     */
-    private fun Int.isPortrait(): Boolean {
-        return when (this) {
-            90, 270 -> true
-            else -> false
         }
     }
 }

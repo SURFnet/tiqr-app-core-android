@@ -62,8 +62,7 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
             scanComponent = ScanComponent(
                 context = requireContext(),
                 lifecycleOwner = viewLifecycleOwner,
-                viewFinder = binding.viewFinder,
-                viewFinderRatio = it.height.toFloat() / it.width.toFloat()
+                viewFinder = binding.viewFinder
             ) { result ->
                 binding.progress.show()
                 viewModel.parseChallenge(result)
@@ -83,22 +82,28 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                 viewLifecycleOwner.lifecycleScope.launchWhenResumed {
                     delay(200L) // delay a bit, otherwise beep sound is cutoff
                     when (result.value) {
-                        is EnrollmentChallenge -> findNavController().navigate(ScanFragmentDirections.actionEnroll(result.value as EnrollmentChallenge))
-                        is AuthenticationChallenge -> findNavController().navigate(ScanFragmentDirections.actionAuthenticate(result.value as AuthenticationChallenge))
+                        is EnrollmentChallenge -> findNavController().navigate(
+                            ScanFragmentDirections.actionEnroll(result.value as EnrollmentChallenge)
+                        )
+
+                        is AuthenticationChallenge -> findNavController().navigate(
+                            ScanFragmentDirections.actionAuthenticate(result.value as AuthenticationChallenge)
+                        )
                     }
                 }
             }
+
             is ChallengeParseResult.Failure -> {
                 MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(result.failure.title)
-                        .setMessage(result.failure.message)
-                        .setCancelable(false)
-                        .setNegativeButton(R.string.button_cancel) { _, _ -> findNavController().popBackStack() }
-                        .setPositiveButton(R.string.button_retry) { dialog, _ ->
-                            dialog.dismiss()
-                            scanComponent.resumeScanning()
-                        }
-                        .show()
+                    .setTitle(result.failure.title)
+                    .setMessage(result.failure.message)
+                    .setCancelable(false)
+                    .setNegativeButton(R.string.button_cancel) { _, _ -> findNavController().popBackStack() }
+                    .setPositiveButton(R.string.button_retry) { dialog, _ ->
+                        dialog.dismiss()
+                        scanComponent.resumeScanning()
+                    }
+                    .show()
             }
         }
     }

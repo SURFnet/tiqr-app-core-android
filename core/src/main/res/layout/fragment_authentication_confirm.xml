@@ -44,7 +44,7 @@
             app:flow_horizontalGap="4dp"
             app:flow_horizontalStyle="spread_inside"
             app:flow_maxElementsWrap="2"
-            app:flow_verticalGap="4dp"
+            app:flow_verticalGap="6dp"
             app:flow_verticalStyle="packed"
             app:flow_wrapMode="chain"
             app:layout_constrainedHeight="true"
