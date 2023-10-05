@@ -36,9 +36,12 @@ import android.media.SoundPool
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.DisplayMetrics
 import androidx.annotation.CheckResult
-import androidx.camera.core.*
+import androidx.camera.core.AspectRatio
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.concurrent.futures.await
@@ -76,22 +79,25 @@ class ScanComponent(
     private lateinit var cameraProvider: ProcessCameraProvider
     private lateinit var cameraPreview: Preview
     private val cameraSelector: CameraSelector = CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-            .build()
+        .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+        .build()
     private lateinit var cameraAnalysis: ImageAnalysis
     private val cameraAnalyzer = ScanAnalyzer(lifecycleOwner, viewFinderRatio, ::onDetected)
     //endregion
 
     //region Sound
     private val soundPool: SoundPool = SoundPool.Builder()
-            .setMaxStreams(1)
-            .setAudioAttributes(AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .build())
-            .build()
+        .setMaxStreams(1)
+        .setAudioAttributes(
+            AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build()
+        )
+        .build()
     private val beepSound: Int = soundPool.load(context, R.raw.beep, 1)
     private val vibrator: Vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-    private val audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private val audioManager: AudioManager =
+        context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     //endregion
 
     private val lifecycleScope = lifecycleOwner.lifecycleScope
@@ -139,32 +145,36 @@ class ScanComponent(
         }
     }
 
+    private fun aspectRatio(width: Int, height: Int): Int {
+        val previewRatio = max(width, height).toDouble() / min(width, height)
+        return if (abs(previewRatio - 4.0 / 3.0) <= abs(previewRatio - 16.0 / 9.0)) {
+            AspectRatio.RATIO_4_3
+        } else {
+            AspectRatio.RATIO_16_9
+        }
+    }
+
     /**
      * Start the camera and QR code detection
      */
     private fun startCamera(cameraProvider: ProcessCameraProvider) {
-        fun aspectRatio(width: Int, height: Int): Int {
-            val previewRatio = max(width, height).toDouble() / min(width, height)
-            return if (abs(previewRatio - 4.0 / 3.0) <= abs(previewRatio - 16.0 / 9.0)) {
-                AspectRatio.RATIO_4_3
-            } else {
-                AspectRatio.RATIO_16_9
-            }
-        }
 
-        val metrics = DisplayMetrics().also { viewFinder.display.getRealMetrics(it) }
+        val rotation = viewFinder.display.rotation
+        val metrics = viewFinder.context.resources.displayMetrics
         val screenAspectRatio = aspectRatio(metrics.widthPixels, metrics.heightPixels)
         cameraPreview = Preview.Builder()
-                .setTargetName("tiqr QR scanner")
-                .setTargetAspectRatio(screenAspectRatio)
-                .setTargetRotation(viewFinder.display.rotation)
-                .build()
+            .setTargetName("tiqr QR scanner")
+            .setTargetAspectRatio(screenAspectRatio)
+            .setTargetRotation(rotation)
+            .build()
 
         cameraAnalysis = ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build().apply {
-            setAnalyzer(ContextCompat.getMainExecutor(context), cameraAnalyzer)
-        }
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .setTargetAspectRatio(screenAspectRatio)
+            .setTargetRotation(rotation)
+            .build().apply {
+                setAnalyzer(ContextCompat.getMainExecutor(context), cameraAnalyzer)
+            }
 
         camera = cameraProvider.run {
             unbindAll()
@@ -201,7 +211,12 @@ class ScanComponent(
         fun vibrate() {
             if (vibrator.hasVibrator()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(VIBRATE_DURATION, VibrationEffect.DEFAULT_AMPLITUDE))
+                    vibrator.vibrate(
+                        VibrationEffect.createOneShot(
+                            VIBRATE_DURATION,
+                            VibrationEffect.DEFAULT_AMPLITUDE
+                        )
+                    )
                 } else {
                     @Suppress("DEPRECATION") // deprecated in API 26
                     vibrator.vibrate(VIBRATE_DURATION)
@@ -216,10 +231,12 @@ class ScanComponent(
                 beep()
                 vibrate()
             }
+
             AudioManager.RINGER_MODE_VIBRATE -> {
                 // No beep, only vibrate
                 vibrate()
             }
+
             AudioManager.RINGER_MODE_SILENT -> {
                 // No beep nor vibrate
             }
