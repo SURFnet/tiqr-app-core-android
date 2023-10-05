@@ -66,7 +66,6 @@ class ScanComponent(
     private val context: Context,
     private val lifecycleOwner: LifecycleOwner,
     private val viewFinder: PreviewView,
-    viewFinderRatio: Float,
     private val scanResult: (result: String) -> Unit,
 ) : DefaultLifecycleObserver {
     companion object {
@@ -82,7 +81,7 @@ class ScanComponent(
         .requireLensFacing(CameraSelector.LENS_FACING_BACK)
         .build()
     private lateinit var cameraAnalysis: ImageAnalysis
-    private val cameraAnalyzer = ScanAnalyzer(lifecycleOwner, viewFinderRatio, ::onDetected)
+    private val cameraAnalyzer = ScanAnalyzer(lifecycleOwner, ::onDetected)
     //endregion
 
     //region Sound
