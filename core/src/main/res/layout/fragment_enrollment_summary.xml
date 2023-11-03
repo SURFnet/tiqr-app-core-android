@@ -40,6 +40,7 @@
             android:id="@id/table"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
             android:layout_marginBottom="16dp"
             android:orientation="horizontal"
             app:constraint_referenced_ids="label_name, name, label_id, id, spacer, label_domain, domain"
