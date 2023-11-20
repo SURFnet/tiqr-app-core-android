@@ -64,3 +64,6 @@
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
+
+#Required because https://issuetracker.google.com/issues/250197571#comment25
+-dontwarn java.lang.invoke.StringConcatFactory

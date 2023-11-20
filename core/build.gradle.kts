@@ -9,17 +9,15 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
 }
 
-if (JavaVersion.current() < JavaVersion.VERSION_11) {
-    throw GradleException("Please use JDK ${JavaVersion.VERSION_11} or above")
+if (JavaVersion.current() < JavaVersion.VERSION_17) {
+    throw GradleException("Please use JDK ${JavaVersion.VERSION_17} or above")
 }
 
 android {
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
-    buildToolsVersion = libs.versions.android.buildTools.get()
 
     defaultConfig {
         minSdk = libs.versions.android.sdk.min.get().toInt()
-        targetSdk = libs.versions.android.sdk.target.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -28,7 +26,10 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
 
         buildFeatures {
@@ -45,18 +46,22 @@ android {
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
 
         }
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
+            jvmTarget = JavaVersion.VERSION_17.toString()
         }
     }
     namespace = "org.tiqr.core"
 }
 
-fun loadCustomProperties(file: File): java.util.Properties {
+kotlin {
+    jvmToolchain(17)
+}
+
+fun loadCustomProperties(file: File): Properties {
     val properties = Properties()
     if (file.isFile) {
         properties.load(file.inputStream())
@@ -66,52 +71,52 @@ fun loadCustomProperties(file: File): java.util.Properties {
 
 val secureProperties = loadCustomProperties(file("../local.properties"))
 
-    dependencies {
-        implementation(libs.kotlin.stdlib)
-        implementation(libs.kotlinx.coroutines.core)
-        implementation(libs.kotlinx.coroutines.android)
-        implementation(libs.androidx.core)
-        implementation(libs.kotlinx.coroutines.playServices)
+dependencies {
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.core)
+    implementation(libs.kotlinx.coroutines.playServices)
 
-        implementation(libs.androidx.activity)
-        implementation(libs.androidx.autofill)
-        implementation(libs.androidx.biometric)
-        implementation(libs.androidx.camera.core)
-        implementation(libs.androidx.camera.camera2)
-        implementation(libs.androidx.camera.lifecycle)
-        implementation(libs.androidx.camera.view)
-        implementation(libs.androidx.constraintlayout)
-        implementation(libs.androidx.core)
-        implementation(libs.androidx.concurrent)
-        implementation(libs.androidx.lifecycle.common)
-        implementation(libs.androidx.lifecycle.livedata)
-        implementation(libs.androidx.localBroadcastManager)
-        implementation(libs.androidx.navigation.fragment)
-        implementation(libs.androidx.navigation.ui)
-        implementation(libs.androidx.recyclerview)
-        implementation(libs.androidx.splashscreen)
-        implementation(libs.google.android.material)
-        implementation(libs.google.mlkit.barcode)
-        implementation(libs.google.firebase.messaging)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.autofill)
+    implementation(libs.androidx.biometric)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.concurrent)
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.localBroadcastManager)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.splashscreen)
+    implementation(libs.google.android.material)
+    implementation(libs.google.mlkit.barcode)
+    implementation(libs.google.firebase.messaging)
 
-        implementation(project(":data"))
+    implementation(project(":data"))
 
-        implementation(libs.dagger.hilt.android)
-        implementation(libs.dagger.hilt.fragment)
-        kapt(libs.dagger.hilt.compiler)
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.dagger.hilt.fragment)
+    kapt(libs.dagger.hilt.compiler)
 
-        implementation(libs.permission)
-        implementation(libs.coil)
-        implementation(libs.betterLink)
+    implementation(libs.permission)
+    implementation(libs.coil)
+    implementation(libs.betterLink)
 
-        testImplementation(libs.junit)
-        androidTestImplementation(libs.junit)
-        androidTestImplementation(libs.androidx.testing.core)
-        androidTestImplementation(libs.androidx.testing.junit)
-        androidTestImplementation(libs.androidx.testing.rules)
-        androidTestImplementation(libs.androidx.testing.epsresso)
-        androidTestImplementation(libs.androidx.testing.uiautomator)
-        androidTestImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.testing.core)
+    androidTestImplementation(libs.androidx.testing.junit)
+    androidTestImplementation(libs.androidx.testing.rules)
+    androidTestImplementation(libs.androidx.testing.epsresso)
+    androidTestImplementation(libs.androidx.testing.uiautomator)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 
     androidTestImplementation(libs.dagger.hilt.testing)
     kaptAndroidTest(libs.dagger.hilt.compiler)

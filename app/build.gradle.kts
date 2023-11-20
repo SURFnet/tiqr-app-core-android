@@ -1,18 +1,18 @@
 plugins {
     id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    id("kotlin-parcelize")
+    id("org.jetbrains.kotlin.android")
     id("dagger.hilt.android.plugin")
+    id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
+    kotlin("kapt")
 }
 
-if (JavaVersion.current() < JavaVersion.VERSION_11) {
-    throw GradleException("Please use JDK ${JavaVersion.VERSION_11} or above")
+if (JavaVersion.current() < JavaVersion.VERSION_17) {
+    throw GradleException("Please use JDK ${JavaVersion.VERSION_17} or above")
 }
 
 android {
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
-    buildToolsVersion = libs.versions.android.buildTools.get()
 
     defaultConfig {
         applicationId = "org.tiqr.sample"
@@ -62,10 +62,11 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
-    packagingOptions {
+    packaging {
         resources.excludes.addAll(
             arrayOf(
                 "META-INF/AL2.0",
@@ -76,6 +77,7 @@ android {
 
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 
     sourceSets {
@@ -84,8 +86,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlin {
+        jvmToolchain(17)
     }
 
     kapt {
@@ -95,11 +101,6 @@ android {
             option("-Xmaxerrs", 1000)
         }
     }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
-
     lint {
         abortOnError = false
     }
@@ -107,11 +108,6 @@ android {
 }
 
 dependencies {
-
-    repositories {
-        google()
-        mavenCentral()
-    }
 
     implementation(project(":core"))
     implementation(project(":data"))
@@ -149,7 +145,7 @@ dependencies {
     implementation(libs.betterLink)
 
     api(libs.moshi.moshi)
-    kapt(libs.moshi.codegen)
+    ksp(libs.moshi.codegen)
 
     api(libs.okhttp.okhttp)
     api(libs.okhttp.logging)

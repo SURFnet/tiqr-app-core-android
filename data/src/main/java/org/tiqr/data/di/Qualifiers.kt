@@ -31,6 +31,18 @@ package org.tiqr.data.di
 
 import javax.inject.Qualifier
 
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class IoDispatcher
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class DefaultDispatcher
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class ApplicationScope
+
 /**
  * Dagger scope for marking OkHttp instance
  * as a base for further setup.
