@@ -2,11 +2,11 @@ import java.util.Properties
 
 plugins {
     id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-    id("com.google.devtools.ksp")
-    id("kotlin-parcelize")
+    id("org.jetbrains.kotlin.android")
     id("dagger.hilt.android.plugin")
+    id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
+    kotlin("kapt")
 }
 
 if (JavaVersion.current() < JavaVersion.VERSION_11) {
@@ -89,7 +89,7 @@ android {
         implementation(libs.google.android.material)
 
         implementation(libs.dagger.hilt.android)
-        kapt(libs.dagger.hilt.compiler)
+        ksp(libs.dagger.hilt.compiler)
 
         api(libs.okhttp.okhttp)
         api(libs.okhttp.logging)
