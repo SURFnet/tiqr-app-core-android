@@ -29,21 +29,28 @@
 
 package org.tiqr.data.repository
 
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import org.tiqr.data.model.SecretType
+import kotlinx.coroutines.withContext
+import org.tiqr.data.di.DefaultDispatcher
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.IdentityWithProvider
+import org.tiqr.data.model.SecretType
 import org.tiqr.data.service.DatabaseService
 import org.tiqr.data.service.SecretService
 
 /**
  * Repository to interact with [Identity].
  */
-class IdentityRepository(private val database: DatabaseService, private val secret: SecretService) {
+class IdentityRepository(
+    private val database: DatabaseService, private val secret: SecretService,
+    @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
+) {
     /**
      * Get [Identity] with given [identifier]
      */
-    fun identity(identifier: String): Flow<IdentityWithProvider?> = database.getIdentityWithProvider(identifier)
+    fun identity(identifier: String): Flow<IdentityWithProvider?> =
+        database.getIdentityWithProvider(identifier)
 
     /**
      * Get all [Identity]'s
@@ -53,7 +60,7 @@ class IdentityRepository(private val database: DatabaseService, private val secr
     /**
      * Set [identity] to use (or not use) biometric
      */
-    suspend fun useBiometric(identity: Identity, use: Boolean) {
+    suspend fun useBiometric(identity: Identity, use: Boolean) = withContext(dispatcher) {
         identity.copy(biometricInUse = use).run {
             database.updateIdentity(this)
         }
@@ -62,7 +69,7 @@ class IdentityRepository(private val database: DatabaseService, private val secr
     /**
      * Upgrade [identity] to use (or not use) biometric
      */
-    suspend fun upgradeToBiometric(identity: Identity, upgrade: Boolean) {
+    suspend fun upgradeToBiometric(identity: Identity, upgrade: Boolean) = withContext(dispatcher) {
         identity.copy(biometricOfferUpgrade = upgrade).run {
             database.updateIdentity(this)
         }
@@ -71,7 +78,7 @@ class IdentityRepository(private val database: DatabaseService, private val secr
     /**
      * Delete [identity]
      */
-    suspend fun delete(identity: Identity) {
+    suspend fun delete(identity: Identity) = withContext(dispatcher) {
         database.deleteIdentity(identity)
         secret.delete(identity)
     }
@@ -81,7 +88,8 @@ class IdentityRepository(private val database: DatabaseService, private val secr
      */
     fun hasBiometricSecret(identity: Identity): Boolean {
         return try {
-            val sessionKey = secret.encryption.keyFromPassword(password = SecretType.BIOMETRIC.key)
+            val sessionKey =
+                secret.encryption.keyFromPassword(password = SecretType.BIOMETRIC.key)
             val secretId = secret.createSecretIdentity(identity, SecretType.BIOMETRIC)
             secret.load(secretId, sessionKey)
             true

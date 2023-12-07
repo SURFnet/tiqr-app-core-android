@@ -31,10 +31,10 @@ package org.tiqr.data.service
 
 import android.content.Context
 import android.util.Base64
-import org.tiqr.data.model.SecretType
 import org.tiqr.data.model.Identity
 import org.tiqr.data.model.Secret
 import org.tiqr.data.model.SecretIdentity
+import org.tiqr.data.model.SecretType
 import org.tiqr.data.model.SessionKey
 import org.tiqr.data.model.asSecret
 import org.tiqr.data.model.asSessionKey
@@ -45,8 +45,22 @@ import org.tiqr.data.util.extension.toCharArray
 import org.tiqr.data.util.extension.toCharArrayCompat
 import timber.log.Timber
 import java.io.IOException
-import java.security.*
-import javax.crypto.*
+import java.security.InvalidAlgorithmParameterException
+import java.security.InvalidKeyException
+import java.security.Key
+import java.security.KeyStore
+import java.security.KeyStoreException
+import java.security.NoSuchAlgorithmException
+import java.security.SecureRandom
+import java.security.UnrecoverableKeyException
+import javax.crypto.BadPaddingException
+import javax.crypto.Cipher
+import javax.crypto.IllegalBlockSizeException
+import javax.crypto.KeyGenerator
+import javax.crypto.NoSuchPaddingException
+import javax.crypto.SecretKey
+import javax.crypto.SecretKeyFactory
+import javax.crypto.ShortBufferException
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
@@ -181,7 +195,6 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
         private fun saveKeystore(sessionKey: SessionKey) {
             context.openFileOutput(KEYSTORE_FILENAME, Context.MODE_PRIVATE).use {
                 try {
-                    sessionKey.value.encoded.toCharArray()
                     keyStore.store(it, sessionKey.value.encoded.toCharArray())
                 } catch (e: Exception) {
                     Timber.e(e)
@@ -262,12 +275,19 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
 
         /**
          * Delete the [SecretKey]
-          */
+         */
         internal fun deleteSecretKey(alias: String) {
             listOf(alias, alias + IV_SUFFIX).run {
-                forEach {
-                    if (keyStore.containsAlias(it)) {
-                        keyStore.deleteEntry(it)
+                try {
+                    forEach {
+                        if (keyStore.containsAlias(it)) {
+                            keyStore.deleteEntry(it)
+                        }
+                    }
+                } catch (e: KeyStoreException) {
+                    if (e.isKeystoreNotInitialized()) {
+                        Timber.e(e, "Keystore not initialized, failed to delete keys")
+                        keyStore.load(null, null)
                     }
                 }
             }
@@ -420,3 +440,13 @@ class SecretService(context: Context, preferenceService: PreferenceService) {
         }
     }
 }
+
+private fun KeyStoreException.isKeystoreNotInitialized() = this.message == "Uninitialized keystore"
+
+private fun KeyStore.isInitialized() =
+    try {
+        this.size()
+        true
+    } catch (e: KeyStoreException) {
+        !e.isKeystoreNotInitialized()
+    }

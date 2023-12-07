@@ -64,18 +64,22 @@ class IdentityDetailFragment : BaseFragment<FragmentIdentityDetailBinding>() {
         viewModel.identity.observe(viewLifecycleOwner) {
             it?.let { identity ->
                 binding.model = identity
-                binding.executePendingBindings()
                 binding.hasBiometric = requireContext().biometricUsable()
                 binding.hasBiometricSecret = viewModel.hasBiometricSecret(identity.identity)
+                binding.executePendingBindings()
             } ?: findNavController().popBackStack()
         }
 
-        binding.biometric.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.useBiometric(args.identity.identity, isChecked)
+        binding.biometric.setOnCheckedChangeListener { toggle, isChecked ->
+            if (toggle.isPressed) {
+                viewModel.useBiometric(args.identity.identity, isChecked)
+            }
         }
 
-        binding.biometricUpgrade.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.upgradeToBiometric(args.identity.identity, isChecked)
+        binding.biometricUpgrade.setOnCheckedChangeListener { toggle, isChecked ->
+            if (toggle.isPressed) {
+                viewModel.upgradeToBiometric(args.identity.identity, isChecked)
+            }
         }
 
         binding.buttonDelete.setOnClickListener {

@@ -30,9 +30,11 @@
 package org.tiqr.data.repository
 
 import dagger.Lazy
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.tiqr.data.api.TokenApi
+import org.tiqr.data.di.DefaultDispatcher
 import org.tiqr.data.model.TiqrConfig
 import org.tiqr.data.repository.base.TokenRegistrarRepository
 import org.tiqr.data.service.PreferenceService
@@ -41,34 +43,38 @@ import timber.log.Timber
 /**
  * Repository to handle token exchange.
  */
-class TokenRepository(private val api: Lazy<TokenApi>, private val preferences: PreferenceService) :
+class TokenRepository(
+    private val api: Lazy<TokenApi>, private val preferences: PreferenceService,
+    @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
+) :
     TokenRegistrarRepository {
     companion object {
         private const val NOT_FOUND = "NOT FOUND"
     }
 
-    override suspend fun executeTokenMigrationIfNeeded(getDeviceTokenFunction: suspend () -> String?) {
-        if (TiqrConfig.tokenExchangeEnabled) {
-            // We are still using the TokenExchange, no migration.
-            return
+    override suspend fun executeTokenMigrationIfNeeded(getDeviceTokenFunction: suspend () -> String?) =
+        withContext(dispatcher) {
+            if (TiqrConfig.tokenExchangeEnabled) {
+                // We are still using the TokenExchange, no migration.
+                return@withContext
+            }
+            if (preferences.notificationTokenMigrationExecuted) {
+                // Already migrated, no migration needed anymore.
+                return@withContext
+            }
+            // Remove the old token, get the current device token from firebase, and set it
+            preferences.notificationToken = null
+            val newToken = getDeviceTokenFunction()
+            if (newToken != null) {
+                preferences.notificationToken = newToken
+                preferences.notificationTokenMigrationExecuted = true
+            }
         }
-        if (preferences.notificationTokenMigrationExecuted) {
-            // Already migrated, no migration needed anymore.
-            return
-        }
-        // Remove the old token, get the current device token from firebase, and set it
-        preferences.notificationToken = null
-        val newToken = getDeviceTokenFunction()
-        if (newToken != null) {
-            preferences.notificationToken = newToken
-            preferences.notificationTokenMigrationExecuted = true
-        }
-    }
 
     /**
      * Register the device token (received from Firebase) and save the resulting notification token.
      */
-    override suspend fun registerDeviceToken(deviceToken: String) {
+    override suspend fun registerDeviceToken(deviceToken: String) = withContext(dispatcher) {
         if (TiqrConfig.tokenExchangeEnabled) {
             try {
                 val newToken = api.get().registerDeviceToken(

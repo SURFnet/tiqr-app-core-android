@@ -1,9 +1,10 @@
-import java.util.*
+import java.util.Properties
 
 plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
 }
@@ -14,7 +15,7 @@ if (JavaVersion.current() < JavaVersion.VERSION_11) {
 
 val secureProperties = loadCustomProperties(file("../local.properties"))
 
-fun loadCustomProperties(file: File): java.util.Properties {
+fun loadCustomProperties(file: File): Properties {
     val properties = Properties()
     if (file.isFile) {
         properties.load(file.inputStream())
@@ -24,11 +25,9 @@ fun loadCustomProperties(file: File): java.util.Properties {
 
 android {
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
-    buildToolsVersion = libs.versions.android.buildTools.get()
 
     defaultConfig {
         minSdk = libs.versions.android.sdk.min.get().toInt()
-        targetSdk = libs.versions.android.sdk.target.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -62,16 +61,23 @@ android {
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
 
         }
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
+            jvmTarget = JavaVersion.VERSION_17.toString()
         }
     }
 
+    kotlin {
+        jvmToolchain(17)
+    }
+
     namespace = "org.tiqr.data"
+    buildFeatures {
+        buildConfig = true
+    }
 
     dependencies {
         implementation(libs.kotlin.stdlib)
@@ -93,12 +99,12 @@ android {
         implementation(libs.retrofit.converter.scalars)
 
         api(libs.moshi.moshi)
-        kapt(libs.moshi.codegen)
+        ksp(libs.moshi.codegen)
 
         api(libs.androidx.room.runtime)
         implementation(libs.androidx.room.ktx)
         implementation(libs.androidx.room.sqlite)
-        kapt(libs.androidx.room.compiler)
+        ksp(libs.androidx.room.compiler)
 
         api(libs.timber)
 

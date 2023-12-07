@@ -22,3 +22,6 @@
 -dontwarn org.conscrypt.ConscryptHostnameVerifier
 -keepnames class ** { *; }
 -keep class ** { *; }
+
+#Required because https://issuetracker.google.com/issues/250197571#comment25
+-dontwarn java.lang.invoke.StringConcatFactory

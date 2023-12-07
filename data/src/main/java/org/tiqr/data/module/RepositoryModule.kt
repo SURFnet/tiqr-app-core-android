@@ -36,8 +36,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import org.tiqr.data.api.TiqrApi
 import org.tiqr.data.api.TokenApi
+import org.tiqr.data.di.DefaultDispatcher
 import org.tiqr.data.repository.AuthenticationRepository
 import org.tiqr.data.repository.EnrollmentRepository
 import org.tiqr.data.repository.IdentityRepository
@@ -61,8 +63,9 @@ internal object RepositoryModule {
         resources: Resources,
         database: DatabaseService,
         secret: SecretService,
-        preferences: PreferenceService
-    ) = AuthenticationRepository(api, resources, database, secret, preferences)
+        preferences: PreferenceService,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ) = AuthenticationRepository(api, resources, database, secret, preferences, dispatcher)
 
     @Provides
     @Singleton
@@ -71,15 +74,17 @@ internal object RepositoryModule {
         resources: Resources,
         database: DatabaseService,
         secret: SecretService,
-        preferences: PreferenceService
-    ) = EnrollmentRepository(api, resources, database, secret, preferences)
+        preferences: PreferenceService,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ) = EnrollmentRepository(api, resources, database, secret, preferences, dispatcher)
 
     @Provides
     @Singleton
     internal fun provideIdentityRepository(
         database: DatabaseService,
-        secret: SecretService
-    ) = IdentityRepository(database, secret)
+        secret: SecretService,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ) = IdentityRepository(database, secret, dispatcher)
 }
 
 /**
@@ -94,6 +99,7 @@ class TokenRepositoryModule {
     @Singleton
     internal fun provideTokenRepository(
         api: Lazy<TokenApi>,
-        preferences: PreferenceService
-    ): TokenRegistrarRepository = TokenRepository(api, preferences)
+        preferences: PreferenceService,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): TokenRegistrarRepository = TokenRepository(api, preferences, dispatcher)
 }

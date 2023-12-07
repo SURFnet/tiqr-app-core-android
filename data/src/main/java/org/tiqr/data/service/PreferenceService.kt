@@ -31,9 +31,11 @@ package org.tiqr.data.service
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.core.content.edit
 import timber.log.Timber
 import java.io.File
+import java.lang.RuntimeException
 
 /**
  * Service to save and retrieve data saved in shared preferences.
@@ -67,7 +69,11 @@ class PreferenceService(private val context: Context) {
 
     var deviceKey: String?
         get() = securitySharedPreferences.getString(PREFS_KEY_DEVICE_KEY, null)
-        set(value) = securitySharedPreferences.edit { putString(PREFS_KEY_DEVICE_KEY, value) }
+        set(value) {
+            val stack = Log.getStackTraceString(RuntimeException("Saving device key called from"))
+            Timber.e("Saving device key here: $stack")
+            securitySharedPreferences.edit { putString(PREFS_KEY_DEVICE_KEY, value) }
+        }
 
     /**
      * When switching over from TokenExchange to non-TokenExchange, we need the make sure,

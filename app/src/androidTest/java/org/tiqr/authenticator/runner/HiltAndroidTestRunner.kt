@@ -27,18 +27,27 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@file:Suppress("unused")
+
 package org.tiqr.authenticator.runner
 
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
 import dagger.hilt.android.testing.HiltTestApplication
+import org.tiqr.data.model.TiqrConfig
 
 /**
  * Custom [AndroidJUnitRunner] to enable Hilt in tests.
  */
 class HiltAndroidTestRunner : AndroidJUnitRunner() {
-    override fun newApplication(cl: ClassLoader?, className: String?, context: Context?): Application {
-        return super.newApplication(cl, HiltTestApplication::class.java.name, context)
+    override fun newApplication(
+        cl: ClassLoader?,
+        className: String?,
+        context: Context?
+    ): Application {
+        val application = super.newApplication(cl, HiltTestApplication::class.java.name, context)
+        TiqrConfig.initialize(application)
+        return application
     }
 }
