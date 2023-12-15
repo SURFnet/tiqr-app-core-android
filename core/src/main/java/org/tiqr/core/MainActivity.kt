@@ -51,7 +51,7 @@ import kotlinx.coroutines.tasks.await
 import org.tiqr.core.base.BaseActivity
 import org.tiqr.core.databinding.ActivityMainBinding
 import org.tiqr.core.scan.ScanFragment
-import org.tiqr.core.scan.ScanKeyEventsReceiver
+import org.tiqr.data.scan.ScanKeyEventsReceiver
 import org.tiqr.core.util.extensions.currentNavigationFragment
 import org.tiqr.core.util.extensions.getNavController
 import org.tiqr.data.model.AuthenticationChallenge

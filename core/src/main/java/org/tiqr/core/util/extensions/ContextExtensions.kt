@@ -46,10 +46,3 @@ fun Context.getThemeColor(@AttrRes attrColor: Int): Int {
         data
     }
 }
-
-/**
- * Check if Biometrics is available and can be used
- */
-fun Context.biometricUsable(): Boolean {
-    return BiometricManager.from(this).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS
-}

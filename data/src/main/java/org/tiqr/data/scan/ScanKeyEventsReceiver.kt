@@ -27,7 +27,7 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.core.scan
+package org.tiqr.data.scan
 
 import android.content.BroadcastReceiver
 import android.content.Context

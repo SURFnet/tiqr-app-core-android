@@ -121,7 +121,6 @@ dependencies {
     implementation(libs.androidx.autofill)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core)
-    implementation(libs.androidx.concurrent)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.savedstate)

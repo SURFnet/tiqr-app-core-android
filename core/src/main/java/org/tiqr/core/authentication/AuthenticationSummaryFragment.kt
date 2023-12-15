@@ -34,12 +34,12 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.navArgs
+import biometricUsable
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentAuthenticationSummaryBinding
-import org.tiqr.core.util.extensions.biometricUsable
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 import kotlin.system.exitProcess
 

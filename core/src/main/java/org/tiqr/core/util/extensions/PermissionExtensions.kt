@@ -42,6 +42,7 @@ import com.fondesa.kpermissions.anyGranted
 import com.fondesa.kpermissions.anyPermanentlyDenied
 import com.fondesa.kpermissions.extension.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import openAppSystemSettings
 import org.tiqr.core.R
 import timber.log.Timber
 
@@ -60,25 +61,6 @@ fun FragmentActivity.hasPermission(permission: String): Boolean {
  */
 @CheckResult
 fun FragmentActivity.hasCameraPermission() = hasPermission(Manifest.permission.CAMERA)
-
-/**
- * Open the app settings for this app.
- * Can be used to redirect the user to enable permissions when denied permanently.
- */
-fun Context.openAppSystemSettings() {
-    try {
-        startActivity(Intent().apply {
-            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-            data = Uri.fromParts("package", packageName, null)
-            addCategory(Intent.CATEGORY_DEFAULT)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-        })
-    } catch (e: ActivityNotFoundException) {
-        Timber.e(e, "Failed to open app system settings")
-    }
-}
 
 /**
  * Check for [Manifest.permission.CAMERA] permission and invoke [onGranted],

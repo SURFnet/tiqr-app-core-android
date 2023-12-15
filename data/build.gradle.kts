@@ -42,10 +42,6 @@ android {
             )
         }
 
-        buildFeatures {
-            dataBinding = true
-        }
-
         kapt {
             correctErrorTypes = true
             useBuildCache = true
@@ -91,6 +87,13 @@ android {
         implementation(libs.dagger.hilt.android)
         ksp(libs.dagger.hilt.compiler)
 
+        api(libs.androidx.biometric)
+        api(libs.androidx.camera.view)
+        api(libs.androidx.camera.core)
+        api(libs.androidx.camera.lifecycle)
+        api(libs.androidx.concurrent)
+        api(libs.google.mlkit.barcode)
+        api(libs.kotlinx.coroutines.playServices)
         api(libs.okhttp.okhttp)
         api(libs.okhttp.logging)
 
