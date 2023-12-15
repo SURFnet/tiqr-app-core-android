@@ -55,5 +55,7 @@
 
     <string name="error_auth_title_account">アカウントが無効です</string>
     <string name="error_auth_account_invalid">無効なアカウントでログインを試みています。(再)有効化してください。</string>
+    <string name="auth_pin_subtitle">ログインするには4桁のPINコードが必要です：</string>
+    <string name="auth_biometric_dialog_cancel">PINを使用</string>
 
 </resources>

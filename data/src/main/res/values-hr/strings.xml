@@ -55,5 +55,7 @@
 
     <string name="error_auth_title_account">Neispravan korisnički račun</string>
     <string name="error_auth_account_invalid">Pokušali ste se prijaviti sa neispravnim ili nepoznatim korisničkim računom. Ponovno aktivirajte Vaš korisnički račun prije novog pokušaja prijave.</string>
+    <string name="auth_pin_subtitle">Angiv PIN-koden og tryk OK:</string>
+    <string name="auth_biometric_dialog_cancel">Koristite PIN</string>
 
 </resources>

@@ -5,6 +5,9 @@
     <string name="start_instructions" translatable="false">Instructions</string>
     <string name="start_blocked" translatable="false">Blocked</string>
 
+    <string name="auth_biometric_dialog_title">Do you want to use biometric to log in?</string>
+    <string name="auth_biometric_dialog_cancel">Use PIN</string>
+
     <!-- Errors -->
     <string name="error_title_unknown">Unknown error</string>
     <string name="error_security_standards">Device is not compatible with required security standards.</string>
@@ -65,4 +68,7 @@
 
     <string name="error_challenge_title_opened_from_invalid_url">The app was opened from an invalid URL</string>
     <string name="error_challenge_opened_from_invalid_url">The link which was used to open the app does not have a valid format. No action will be taken.</string>
+
+    <string name="auth_pin_subtitle">Enter the PIN and press OK:</string>
+    <string name="auth_biometric_dialog_cancel">Use PIN</string>
 </resources>

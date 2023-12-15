@@ -56,5 +56,7 @@
 
     <string name="error_auth_title_account">Compte invalide</string>
     <string name="error_auth_account_invalid">Vous avez essayé de vous connecter avec un compte invalide ou inconnu. Veuillez d\'abord (re-)activer votre compte.</string>
+    <string name="auth_pin_subtitle">Vous devez entrer votre code PIN à 4 chiffres pour vous connecter:</string>
+    <string name="auth_biometric_dialog_cancel">Utiliser le code PIN</string>
 
 </resources>

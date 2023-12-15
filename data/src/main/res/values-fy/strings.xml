@@ -55,5 +55,7 @@
 
     <string name="error_auth_title_account">Ûnjildich akkount</string>
     <string name="error_auth_account_invalid">Jo besykje yn te loche mei in ûnjildich of ûnbekend akkount. (Re-)aktivear jo akkount earst.</string>
+    <string name="auth_pin_subtitle">Jo moatte jo fjouwer-siferiche PIN ynjaan om yn te loche:</string>
+    <string name="auth_biometric_dialog_cancel">PIN brûke</string>
 
 </resources>

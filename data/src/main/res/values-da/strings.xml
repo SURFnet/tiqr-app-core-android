@@ -55,4 +55,6 @@
 
     <string name="error_auth_title_account">Ugyldig konto</string>
     <string name="error_auth_account_invalid">Du forsøgte at logge ind med en ugyldig eller ukendt konto. Venligst (gen) aktiver din konto først.</string>
+    <string name="auth_pin_subtitle">Angiv PIN-koden og tryk OK:</string>
+    <string name="auth_biometric_dialog_cancel">Brug PIN</string>
 </resources>
