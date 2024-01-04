@@ -55,7 +55,7 @@
 
     <string name="error_auth_title_account">Ungültiges Benutzerkonto</string>
     <string name="error_auth_account_invalid">Sie haben versucht, sich mit einem unbekannten oder falschen Benutzerkonto anzumelden. Bitte (re-)aktivieren Sie ihr Benutzerkonto erneut.</string>
-    <string name="auth_pin_subtitle">Sie müssen zum Anmelden Ihre vierstellige PIN eingeben:</string>
+    <string name="auth_biometric_dialog_title">Möchten Sie sich biometrisch anmelden?</string>
     <string name="auth_biometric_dialog_cancel">"Verwenden Sie die PIN "</string>
 
 </resources>

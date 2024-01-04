@@ -55,7 +55,6 @@
 
     <string name="error_auth_title_account">Neispravan korisnički nalog</string>
     <string name="error_auth_account_invalid">Pokušali ste da se prijavite sa neispravnim ili nepoznatim korisničkim nalogom. Molimo vas da prvo (re)aktivirate Vaš korisnički nalog.</string>
-    <string name="auth_pin_subtitle">Za prijavu je potrebno uneti 4-cifreni PIN kod:</string>
+    <string name="auth_biometric_dialog_title">Da li želite da koristite biometrijske podatke za prijavljivanje?</string>
     <string name="auth_biometric_dialog_cancel">Koristite PIN</string>
-
 </resources>

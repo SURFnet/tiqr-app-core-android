@@ -55,7 +55,7 @@
 
     <string name="error_auth_title_account">Ugyldig konto</string>
     <string name="error_auth_account_invalid">Du forsøkte å logge inn med en ukjent eller ugyldig konto. Vennligst (re)aktiver konto først.</string>
-    <string name="auth_pin_subtitle">Du må oppgi din 4-talls pinkode for å logge på:</string>
+    <string name="auth_biometric_dialog_title">Vil du bruke biometrisk til å logge på?</string>
     <string name="auth_biometric_dialog_cancel">Bruk PIN</string>
 
 </resources>

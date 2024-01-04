@@ -54,7 +54,7 @@
 
     <string name="error_auth_title_account">Ongeldig account</string>
     <string name="error_auth_account_invalid">Je probeert in te loggen met een ongeldig of onbekend account. (Her-)activeer uw account eerst.</string>
-    <string name="auth_pin_subtitle">Angiv PIN-koden og tryk OK:</string>
+    <string name="auth_biometric_dialog_title">Wil je biometrie gebruiken om in te loggen?</string>
     <string name="auth_biometric_dialog_cancel">Gebruik pincode</string>
 
 </resources>

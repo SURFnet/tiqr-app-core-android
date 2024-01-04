@@ -55,7 +55,6 @@
 
     <string name="error_auth_title_account">Cont invalid</string>
     <string name="error_auth_account_invalid">Ati incercat sa va autentificati cu un cont invalid sau necunoscut. Va rugam (re)activati contul dumneavoastra mai intai.</string>
-    <string name="auth_pin_subtitle">Trebuie sa introduceti codul dumneavoastra PIN din 4 cifre pentru a va autentifica:</string>
+    <string name="auth_biometric_dialog_title">Doriți să utilizați biometric pentru a vă conecta?</string>
     <string name="auth_biometric_dialog_cancel">Utilizați codul PIN</string>
-
 </resources>

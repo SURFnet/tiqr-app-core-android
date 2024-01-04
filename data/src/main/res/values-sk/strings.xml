@@ -55,7 +55,7 @@
 
     <string name="error_auth_title_account">Neplatný účet</string>
     <string name="error_auth_account_invalid">Pokus o prihlásenie s neplatným alebo neznámym účtom. Prosím, (re-)aktivujte svoj účet.</string>
-    <string name="auth_pin_subtitle">Pre prihlásenie je potrebné vložiť 4-miestny PIN kód:</string>
+    <string name="auth_biometric_dialog_title">Chcete sa prihlásiť pomocou biometrie?</string>
     <string name="auth_biometric_dialog_cancel">Použiť PIN</string>
 
 </resources>

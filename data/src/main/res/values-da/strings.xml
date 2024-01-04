@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Errors -->
     <string name="error_title_unknown">Ukendt fejl</string>
     <string name="error_security_standards">Enheden her opfylder ikke sikkerhedskravene.</string>
@@ -55,6 +55,6 @@
 
     <string name="error_auth_title_account">Ugyldig konto</string>
     <string name="error_auth_account_invalid">Du forsøgte at logge ind med en ugyldig eller ukendt konto. Venligst (gen) aktiver din konto først.</string>
-    <string name="auth_pin_subtitle">Angiv PIN-koden og tryk OK:</string>
+    <string name="auth_biometric_dialog_title">Vil du bruge biometrisk til at logge ind?</string>
     <string name="auth_biometric_dialog_cancel">Brug PIN</string>
 </resources>
