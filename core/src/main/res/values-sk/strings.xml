@@ -110,6 +110,5 @@
     <string name="identity_biometric_upgrade">Inovácia na využitie biometrie</string>
 
     <!-- Notification channel -->
-    <string name="notification_channel_name">Správy</string>
     <string name="notification_channel_description">Upozornenia na správy od tiqr</string>
 </resources>

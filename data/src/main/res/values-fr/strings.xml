@@ -60,4 +60,5 @@
     <string name="auth_biometric_dialog_cancel">Utiliser le code PIN</string>
 
     <string name="auth_pin_subtitle">Vous devez entrer votre code PIN à 4 chiffres pour vous connecter:</string>
+    <string name="notification_channel_name">Messages</string>
 </resources>

@@ -111,7 +111,6 @@
     <string name="identity_biometric_upgrade">Actualizare la utilizarea biometriei</string>
 
     <!-- Notification channel -->
-    <string name="notification_channel_name">Mesaje</string>
     <string name="notification_channel_description">Notificări pentru mesaje de la tiqr</string>
     <string name="button_allow">Permite</string>
     <string name="button_deny">Respinge</string>

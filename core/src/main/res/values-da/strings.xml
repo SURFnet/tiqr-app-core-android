@@ -107,6 +107,5 @@
     <string name="identity_biometric_upgrade">Opgrader til brug af biometri</string>
 
     <!-- Notification channel -->
-    <string name="notification_channel_name">Meddelelser</string>
     <string name="notification_channel_description">Underretninger om meddelelser fra tiqr</string>
 </resources>

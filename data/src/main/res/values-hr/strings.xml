@@ -59,4 +59,5 @@
     <string name="auth_biometric_dialog_cancel">Koristite PIN</string>
 
     <string name="auth_pin_subtitle">Za prijavu je potrebno unijeti 4-znamenkasti PIN kod:</string>
+    <string name="notification_channel_name">Poruke</string>
 </resources>

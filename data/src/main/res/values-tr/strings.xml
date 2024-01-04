@@ -60,4 +60,5 @@
     <string name="auth_biometric_dialog_cancel">PIN kullan</string>
 
     <string name="auth_pin_subtitle">PIN kodunu girin ve Tamam\'a dokun:</string>
+    <string name="notification_channel_name">Mesajlar</string>
 </resources>

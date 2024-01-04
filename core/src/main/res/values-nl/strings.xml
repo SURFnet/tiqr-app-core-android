@@ -108,7 +108,6 @@
     <string name="identity_biometric_upgrade">Upgrade naar biometriegebruik</string>
 
     <!-- Notification channel -->
-    <string name="notification_channel_name">Berichten</string>
     <string name="notification_channel_description">Notificaties voor berichten van tiqr</string>
     <string name="button_allow">Sta toe</string>
     <string name="button_deny">Weiger</string>

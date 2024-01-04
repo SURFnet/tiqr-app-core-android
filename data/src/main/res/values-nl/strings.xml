@@ -58,4 +58,6 @@
     <string name="auth_biometric_dialog_cancel">Gebruik pincode</string>
 
     <string name="auth_pin_subtitle">Vul de PIN in en druk op OK:</string>
+    <string name="notification_channel_name">Berichten</string>
+
 </resources>

@@ -59,4 +59,5 @@
     <string name="auth_biometric_dialog_cancel">Utilizați codul PIN</string>
 
     <string name="auth_pin_subtitle">Trebuie sa introduceti codul dumneavoastra PIN din 4 cifre pentru a va autentifica:</string>
+    <string name="notification_channel_name">Mesaje</string>
 </resources>

@@ -59,4 +59,5 @@
     <string name="auth_biometric_dialog_cancel">PIN brûke</string>
 
     <string name="auth_pin_subtitle">Jo moatte jo fjouwer-siferiche PIN ynjaan om yn te loche:</string>
+    <string name="notification_channel_name">Berjochten</string>
 </resources>

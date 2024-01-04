@@ -59,4 +59,5 @@
     <string name="auth_biometric_dialog_cancel">Uporabi PIN</string>
 
     <string name="auth_pin_subtitle">Za prijavo vpišite vaš 4-številčni PIN:</string>
+    <string name="notification_channel_name">Sporočila</string>
 </resources>
