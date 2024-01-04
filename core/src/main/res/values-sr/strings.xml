@@ -84,7 +84,6 @@
 
     <!-- Authentication (Biometric) -->
     <string name="auth_biometric_title">Koristite biometrijske</string>
-    <string name="auth_biometric_dialog_title">Da li želite da koristite biometrijske podatke za prijavljivanje?</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Molimo unesite PIN</string>

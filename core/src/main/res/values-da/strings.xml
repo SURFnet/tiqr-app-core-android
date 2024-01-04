@@ -81,7 +81,6 @@
 
     <!-- Authentication (Biometric) -->
     <string name="auth_biometric_title">Brug biometrisk</string>
-    <string name="auth_biometric_dialog_title">Vil du bruge biometrisk til at logge ind?</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Angiv din PIN-kode til tiqr</string>

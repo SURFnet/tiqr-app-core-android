@@ -84,7 +84,6 @@
 
     <!-- Authentication (Biometric) -->
     <string name="auth_biometric_title">Brûk biometrysk</string>
-    <string name="auth_biometric_dialog_title">Wolle jo biometrysk brûke om yn te loggen?</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Fier jo PIN yn</string>

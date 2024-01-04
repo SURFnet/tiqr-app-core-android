@@ -70,4 +70,5 @@
     <string name="error_challenge_opened_from_invalid_url">The link which was used to open the app does not have a valid format. No action will be taken.</string>
 
     <string name="auth_pin_subtitle">Enter the PIN and press OK:</string>
+    <string name="notification_channel_name">Messages</string>
 </resources>

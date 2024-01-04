@@ -57,4 +57,5 @@
     <string name="auth_biometric_dialog_title">Wil je biometrie gebruiken om in te loggen?</string>
     <string name="auth_biometric_dialog_cancel">Gebruik pincode</string>
 
+    <string name="auth_pin_subtitle">Vul de PIN in en druk op OK:</string>
 </resources>

@@ -58,4 +58,5 @@
     <string name="auth_biometric_dialog_title">Chcete sa prihlásiť pomocou biometrie?</string>
     <string name="auth_biometric_dialog_cancel">Použiť PIN</string>
 
+    <string name="auth_pin_subtitle">Pre prihlásenie je potrebné vložiť 4-miestny PIN kód:</string>
 </resources>

@@ -58,4 +58,5 @@
     <string name="auth_biometric_dialog_title">Möchten Sie sich biometrisch anmelden?</string>
     <string name="auth_biometric_dialog_cancel">"Verwenden Sie die PIN "</string>
 
+    <string name="auth_pin_subtitle">Sie müssen zum Anmelden Ihre vierstellige PIN eingeben:</string>
 </resources>

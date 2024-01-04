@@ -57,4 +57,6 @@
     <string name="error_auth_account_invalid">Poskušate se prijaviti z neveljavnim računom. Poskusite najprej reaktivirati svoj račun.</string>
     <string name="auth_biometric_dialog_title">Ali želite za prijavo uporabiti biometrično?</string>
     <string name="auth_biometric_dialog_cancel">Uporabi PIN</string>
+
+    <string name="auth_pin_subtitle">Za prijavo vpišite vaš 4-številčni PIN:</string>
 </resources>

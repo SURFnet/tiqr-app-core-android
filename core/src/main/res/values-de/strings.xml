@@ -85,7 +85,6 @@
 
     <!-- Authentication (Biometric) -->
     <string name="auth_biometric_title">Verwenden Sie Biometrie</string>
-    <string name="auth_biometric_dialog_title">Möchten Sie sich biometrisch anmelden?</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Bitte geben Sie ihre PIN ein</string>

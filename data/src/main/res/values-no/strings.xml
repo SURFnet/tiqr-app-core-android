@@ -58,4 +58,5 @@
     <string name="auth_biometric_dialog_title">Vil du bruke biometrisk til å logge på?</string>
     <string name="auth_biometric_dialog_cancel">Bruk PIN</string>
 
+    <string name="auth_pin_subtitle">Du må oppgi din 4-talls pinkode for å logge på:</string>
 </resources>

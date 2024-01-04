@@ -82,7 +82,6 @@
 
     <!-- Authentication (Biometric) -->
     <string name="auth_biometric_title">Gebruik biometrie</string>
-    <string name="auth_biometric_dialog_title">Wil je biometrie gebruiken om in te loggen?</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Voer je PIN voor tiqr in</string>

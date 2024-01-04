@@ -85,7 +85,6 @@
 
     <!-- Authentication (Biometric) -->
     <string name="auth_biometric_title">Utilizați biometric</string>
-    <string name="auth_biometric_dialog_title">Doriți să utilizați biometric pentru a vă conecta?</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Va rugam introduceti codul PIN</string>

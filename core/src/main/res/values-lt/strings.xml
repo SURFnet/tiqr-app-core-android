@@ -81,7 +81,6 @@
 
     <!-- Authentication (Biometric) -->
     <string name="auth_biometric_title">Naudokite biometrinę informaciją</string>
-    <string name="auth_biometric_dialog_title">Ar norite prisijungti naudodami biometrinius duomenis?</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Įveskite savo PIN</string>
