@@ -36,10 +36,8 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.graphics.drawable.toBitmap
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -95,12 +93,14 @@ class TiqrMessagingService : FirebaseMessagingService() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 notificationManager.createNotificationChannel(
-                        NotificationChannel(
-                            CHANNEL_ID,
-                                resources.getString(R.string.notification_channel_name),
-                                NotificationManager.IMPORTANCE_DEFAULT).also {
-                            it.description = resources.getString(R.string.notification_channel_description)
-                        }
+                    NotificationChannel(
+                        CHANNEL_ID,
+                        resources.getString(org.tiqr.data.R.string.notification_channel_name),
+                        NotificationManager.IMPORTANCE_DEFAULT
+                    ).also {
+                        it.description =
+                            resources.getString(R.string.notification_channel_description)
+                    }
                 )
             }
 

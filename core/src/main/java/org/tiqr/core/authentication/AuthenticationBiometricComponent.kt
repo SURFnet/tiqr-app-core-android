@@ -33,7 +33,6 @@ import android.content.Context
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import org.tiqr.core.R
 import timber.log.Timber
 import java.util.concurrent.Executor
 
@@ -52,7 +51,7 @@ class AuthenticationBiometricComponent(
     init {
         prompt = BiometricPrompt(fragment, executor, this)
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle(context.getString(R.string.auth_biometric_dialog_title))
+            .setTitle(context.getString(org.tiqr.data.R.string.auth_biometric_dialog_title))
             .setNegativeButtonText(context.getString(org.tiqr.data.R.string.auth_biometric_dialog_cancel))
             .build()
     }
