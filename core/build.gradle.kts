@@ -82,8 +82,6 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.autofill)
 
-    implementation(libs.androidx.camera.camera2)
-
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.common)

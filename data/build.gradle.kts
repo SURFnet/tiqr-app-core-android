@@ -91,6 +91,7 @@ android {
         api(libs.androidx.camera.view)
         api(libs.androidx.camera.core)
         api(libs.androidx.camera.lifecycle)
+        api(libs.androidx.camera.camera2)
         api(libs.androidx.concurrent)
         api(libs.google.mlkit.barcode)
         api(libs.kotlinx.coroutines.playServices)
