@@ -27,7 +27,7 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.tiqr.core.scan
+package org.tiqr.data.scan
 
 import android.content.Context
 import android.media.AudioAttributes
@@ -53,7 +53,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.tiqr.core.R
+import org.tiqr.data.R
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

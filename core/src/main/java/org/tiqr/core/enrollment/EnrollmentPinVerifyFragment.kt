@@ -40,9 +40,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentEnrollmentPinVerifyBinding
-import org.tiqr.core.util.extensions.biometricUsable
 import org.tiqr.data.model.ChallengeCompleteResult
 import org.tiqr.data.model.EnrollmentCompleteFailure
+import org.tiqr.data.util.extension.biometricUsable
 import org.tiqr.data.viewmodel.EnrollmentViewModel
 
 /**

@@ -33,7 +33,6 @@ import android.content.Context
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import org.tiqr.core.R
 import timber.log.Timber
 import java.util.concurrent.Executor
 
@@ -41,9 +40,9 @@ import java.util.concurrent.Executor
  * Component to use biometrics to authenticate.
  */
 class AuthenticationBiometricComponent(
-        fragment: Fragment,
-        context: Context,
-        private val onResult: (BiometricResult) -> Unit
+    fragment: Fragment,
+    context: Context,
+    private val onResult: (BiometricResult) -> Unit
 ) : BiometricPrompt.AuthenticationCallback() {
     private val executor: Executor = ContextCompat.getMainExecutor(context)
     private val promptInfo: BiometricPrompt.PromptInfo
@@ -52,15 +51,16 @@ class AuthenticationBiometricComponent(
     init {
         prompt = BiometricPrompt(fragment, executor, this)
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-                .setTitle(context.getString(R.string.auth_biometric_dialog_title))
-                .setNegativeButtonText(context.getString(R.string.auth_biometric_dialog_cancel))
-                .build()
+            .setTitle(context.getString(org.tiqr.data.R.string.auth_biometric_dialog_title))
+            .setNegativeButtonText(context.getString(org.tiqr.data.R.string.auth_biometric_dialog_cancel))
+            .build()
     }
 
     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
         when (errorCode) {
             BiometricPrompt.ERROR_USER_CANCELED,
             BiometricPrompt.ERROR_NEGATIVE_BUTTON -> onResult(BiometricResult.Cancel)
+
             else -> Timber.d("Error using biometrics #$errorCode: $errString")
         }
     }
@@ -83,6 +83,6 @@ class AuthenticationBiometricComponent(
     sealed class BiometricResult {
         object Success : BiometricResult()
         object Cancel : BiometricResult()
-        object Fail: BiometricResult()
+        object Fail : BiometricResult()
     }
 }

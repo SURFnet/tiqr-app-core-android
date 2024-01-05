@@ -45,6 +45,7 @@ import org.tiqr.core.util.extensions.hasCameraPermission
 import org.tiqr.data.model.AuthenticationChallenge
 import org.tiqr.data.model.ChallengeParseResult
 import org.tiqr.data.model.EnrollmentChallenge
+import org.tiqr.data.scan.ScanComponent
 import org.tiqr.data.viewmodel.ScanViewModel
 
 @AndroidEntryPoint

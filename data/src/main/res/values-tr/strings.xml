@@ -56,4 +56,9 @@
 
     <string name="error_auth_title_account">Geçersiz hesap </string>
     <string name="error_auth_account_invalid">Geçersiz veya bilinmeyen bir hesapla giriş yapmaya çalıştınız. Lütfen önce hesabınızı (yeniden) etkinleştirin.</string>
+    <string name="auth_biometric_dialog_title">Giriş yapmak için biyometri kullanmak istiyor musunuz?</string>
+    <string name="auth_biometric_dialog_cancel">PIN kullan</string>
+
+    <string name="auth_pin_subtitle">PIN kodunu girin ve Tamam\'a dokun:</string>
+    <string name="notification_channel_name">Mesajlar</string>
 </resources>

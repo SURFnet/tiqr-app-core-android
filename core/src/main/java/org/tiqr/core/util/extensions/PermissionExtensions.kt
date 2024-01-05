@@ -30,19 +30,17 @@
 package org.tiqr.core.util.extensions
 
 import android.Manifest
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.annotation.CheckResult
 import androidx.fragment.app.FragmentActivity
 import com.fondesa.kpermissions.anyDenied
 import com.fondesa.kpermissions.anyGranted
 import com.fondesa.kpermissions.anyPermanentlyDenied
-import com.fondesa.kpermissions.extension.*
+import com.fondesa.kpermissions.extension.checkPermissionsStatus
+import com.fondesa.kpermissions.extension.permissionsBuilder
+import com.fondesa.kpermissions.extension.send
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.tiqr.core.R
+import org.tiqr.data.util.extension.openAppSystemSettings
 import timber.log.Timber
 
 /**
@@ -62,25 +60,6 @@ fun FragmentActivity.hasPermission(permission: String): Boolean {
 fun FragmentActivity.hasCameraPermission() = hasPermission(Manifest.permission.CAMERA)
 
 /**
- * Open the app settings for this app.
- * Can be used to redirect the user to enable permissions when denied permanently.
- */
-fun Context.openAppSystemSettings() {
-    try {
-        startActivity(Intent().apply {
-            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-            data = Uri.fromParts("package", packageName, null)
-            addCategory(Intent.CATEGORY_DEFAULT)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-        })
-    } catch (e: ActivityNotFoundException) {
-        Timber.e(e, "Failed to open app system settings")
-    }
-}
-
-/**
  * Check for [Manifest.permission.CAMERA] permission and invoke [onGranted],
  * otherwise ask the permission and handle the user interaction.
  */
@@ -96,14 +75,14 @@ inline fun FragmentActivity.doOnCameraPermission(crossinline onGranted: () -> Un
                     result.anyPermanentlyDenied() -> {
                         Timber.e("User has denied Camera permission permanently")
                         MaterialAlertDialogBuilder(this@doOnCameraPermission)
-                                .setTitle(R.string.scan_permission_required_title)
-                                .setMessage(R.string.scan_permission_required_message)
-                                .setPositiveButton(R.string.scan_permission_required_settings) { _, _ ->
-                                    Timber.i("User opened app settings")
-                                    openAppSystemSettings()
-                                }
-                                .setNegativeButton(R.string.scan_permission_required_dismiss, null)
-                                .show()
+                            .setTitle(R.string.scan_permission_required_title)
+                            .setMessage(R.string.scan_permission_required_message)
+                            .setPositiveButton(R.string.scan_permission_required_settings) { _, _ ->
+                                Timber.i("User opened app settings")
+                                openAppSystemSettings()
+                            }
+                            .setNegativeButton(R.string.scan_permission_required_dismiss, null)
+                            .show()
                     }
                 }
             }

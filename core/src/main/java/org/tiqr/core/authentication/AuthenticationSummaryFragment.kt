@@ -39,7 +39,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentAuthenticationSummaryBinding
-import org.tiqr.core.util.extensions.biometricUsable
+import org.tiqr.data.util.extension.biometricUsable
 import org.tiqr.data.viewmodel.AuthenticationViewModel
 import kotlin.system.exitProcess
 

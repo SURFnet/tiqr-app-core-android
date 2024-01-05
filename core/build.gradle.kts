@@ -77,18 +77,13 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.core)
-    implementation(libs.kotlinx.coroutines.playServices)
+
 
     implementation(libs.androidx.activity)
     implementation(libs.androidx.autofill)
-    implementation(libs.androidx.biometric)
-    implementation(libs.androidx.camera.core)
-    implementation(libs.androidx.camera.camera2)
-    implementation(libs.androidx.camera.lifecycle)
-    implementation(libs.androidx.camera.view)
+
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core)
-    implementation(libs.androidx.concurrent)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.localBroadcastManager)
@@ -97,7 +92,6 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.splashscreen)
     implementation(libs.google.android.material)
-    implementation(libs.google.mlkit.barcode)
     implementation(libs.google.firebase.messaging)
 
     implementation(project(":data"))

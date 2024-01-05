@@ -55,5 +55,9 @@
 
     <string name="error_auth_title_account">Netinkama paskyra</string>
     <string name="error_auth_account_invalid">Jūs bandėte prisijungti su neteisinga arba nežinoma paskyra. Pakartotinai aktyvuokite savo paskyrą.</string>
+    <string name="auth_biometric_dialog_title">Ar norite prisijungti naudodami biometrinius duomenis?</string>
+    <string name="auth_biometric_dialog_cancel">Naudoti PIN kodą</string>
 
+    <string name="auth_pin_subtitle">Įrašykite PIN ir paspauskite Taip:</string>
+    <string name="notification_channel_name">Pranešimas</string>
 </resources>

@@ -82,12 +82,9 @@
 
     <!-- Authentication (Biometric) -->
     <string name="auth_biometric_title">Gebruik biometrie</string>
-    <string name="auth_biometric_dialog_title">Wil je biometrie gebruiken om in te loggen?</string>
-    <string name="auth_biometric_dialog_cancel">Gebruik pincode</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Voer je PIN voor tiqr in</string>
-    <string name="auth_pin_subtitle">Vul de PIN in en druk op OK:</string>
 
     <!-- Authentication (Fallback) -->
     <string name="auth_fallback_title">Je lijkt offline te zijn</string>
@@ -111,7 +108,6 @@
     <string name="identity_biometric_upgrade">Upgrade naar biometriegebruik</string>
 
     <!-- Notification channel -->
-    <string name="notification_channel_name">Berichten</string>
     <string name="notification_channel_description">Notificaties voor berichten van tiqr</string>
     <string name="button_allow">Sta toe</string>
     <string name="button_deny">Weiger</string>

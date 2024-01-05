@@ -81,12 +81,9 @@
 
     <!-- Authentication (Biometric) -->
     <string name="auth_biometric_title">Brug biometrisk</string>
-    <string name="auth_biometric_dialog_title">Vil du bruge biometrisk til at logge ind?</string>
-    <string name="auth_biometric_dialog_cancel">Brug PIN</string>
 
     <!-- Authentication (Pin) -->
     <string name="auth_pin_title">Angiv din PIN-kode til tiqr</string>
-    <string name="auth_pin_subtitle">Angiv PIN-koden og tryk OK:</string>
 
     <!-- Authentication (Fallback) -->
     <string name="auth_fallback_title">Det ser ud til du er offline</string>
@@ -110,6 +107,5 @@
     <string name="identity_biometric_upgrade">Opgrader til brug af biometri</string>
 
     <!-- Notification channel -->
-    <string name="notification_channel_name">Meddelelser</string>
     <string name="notification_channel_description">Underretninger om meddelelser fra tiqr</string>
 </resources>

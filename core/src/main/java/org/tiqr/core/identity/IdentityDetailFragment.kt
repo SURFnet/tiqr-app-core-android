@@ -40,8 +40,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentIdentityDetailBinding
-import org.tiqr.core.util.extensions.biometricUsable
 import org.tiqr.data.model.Identity
+import org.tiqr.data.util.extension.biometricUsable
 import org.tiqr.data.viewmodel.IdentityViewModel
 
 /**
