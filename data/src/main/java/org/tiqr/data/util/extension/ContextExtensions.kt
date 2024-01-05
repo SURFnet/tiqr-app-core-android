@@ -1,3 +1,5 @@
+package org.tiqr.data.util.extension
+
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent

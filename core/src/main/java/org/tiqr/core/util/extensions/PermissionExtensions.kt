@@ -30,20 +30,17 @@
 package org.tiqr.core.util.extensions
 
 import android.Manifest
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.annotation.CheckResult
 import androidx.fragment.app.FragmentActivity
 import com.fondesa.kpermissions.anyDenied
 import com.fondesa.kpermissions.anyGranted
 import com.fondesa.kpermissions.anyPermanentlyDenied
-import com.fondesa.kpermissions.extension.*
+import com.fondesa.kpermissions.extension.checkPermissionsStatus
+import com.fondesa.kpermissions.extension.permissionsBuilder
+import com.fondesa.kpermissions.extension.send
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import openAppSystemSettings
 import org.tiqr.core.R
+import org.tiqr.data.util.extension.openAppSystemSettings
 import timber.log.Timber
 
 /**
@@ -78,14 +75,14 @@ inline fun FragmentActivity.doOnCameraPermission(crossinline onGranted: () -> Un
                     result.anyPermanentlyDenied() -> {
                         Timber.e("User has denied Camera permission permanently")
                         MaterialAlertDialogBuilder(this@doOnCameraPermission)
-                                .setTitle(R.string.scan_permission_required_title)
-                                .setMessage(R.string.scan_permission_required_message)
-                                .setPositiveButton(R.string.scan_permission_required_settings) { _, _ ->
-                                    Timber.i("User opened app settings")
-                                    openAppSystemSettings()
-                                }
-                                .setNegativeButton(R.string.scan_permission_required_dismiss, null)
-                                .show()
+                            .setTitle(R.string.scan_permission_required_title)
+                            .setMessage(R.string.scan_permission_required_message)
+                            .setPositiveButton(R.string.scan_permission_required_settings) { _, _ ->
+                                Timber.i("User opened app settings")
+                                openAppSystemSettings()
+                            }
+                            .setNegativeButton(R.string.scan_permission_required_dismiss, null)
+                            .show()
                     }
                 }
             }
