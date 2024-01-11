@@ -47,8 +47,10 @@ import androidx.camera.view.PreviewView
 import androidx.concurrent.futures.await
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -106,10 +108,11 @@ class ScanComponent(
 
     init {
         lifecycleOwner.lifecycle.addObserver(this)
-
         lifecycleScope.launch {
-            cameraProvider = initCameraProvider()
-            startCamera(cameraProvider)
+            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                cameraProvider = initCameraProvider()
+                startCamera(cameraProvider)
+            }
         }
     }
 
