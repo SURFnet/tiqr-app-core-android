@@ -82,6 +82,7 @@ android {
         implementation(libs.androidx.core)
         implementation(libs.androidx.lifecycle.livedata)
         implementation(libs.androidx.lifecycle.viewmodel)
+        implementation(libs.androidx.lifecycle.scope)
         implementation(libs.google.android.material)
 
         implementation(libs.dagger.hilt.android)
