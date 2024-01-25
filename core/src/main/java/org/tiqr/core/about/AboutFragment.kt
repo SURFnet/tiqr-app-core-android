@@ -29,22 +29,10 @@
 
 package org.tiqr.core.about
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Context.CLIPBOARD_SERVICE
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentAboutBinding
-import java.security.Security
 
 
 /**
@@ -53,56 +41,4 @@ import java.security.Security
 class AboutFragment : BaseFragment<FragmentAboutBinding>() {
     @LayoutRes
     override val layout = R.layout.fragment_about
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val capabilities = generateSecurityCapabilities()
-        binding.security.setOnClickListener {
-            sendEmail(it.context, capabilities)
-        }
-        val clipboardManager: ClipboardManager =
-            requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        binding.security.setOnLongClickListener { it ->
-            clipboardManager.setPrimaryClip(ClipData.newPlainText("Copied", capabilities))
-            Toast.makeText(it.context, R.string.about_copied, Toast.LENGTH_SHORT).show()
-            true
-        }
-        binding.securityData.text = capabilities
-    }
-
-    private fun sendEmail(context: Context, emailBody: String) {
-        val versionName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.packageManager.getPackageInfo(
-                context.packageName, PackageManager.PackageInfoFlags.of(0)
-            ).versionName
-        } else {
-            context.packageManager.getPackageInfo(
-                context.packageName, 0
-            ).versionName
-        }
-        val appName = getString(R.string.app_name)
-        val title = getString(R.string.about_label_version, appName, versionName)
-
-        val uri = Uri.parse("mailto:tiqr@surf.nl")
-            .buildUpon()
-            .appendQueryParameter("to", "tiqr@surf.nl")
-            .appendQueryParameter("subject", title)
-            .appendQueryParameter("body", emailBody)
-            .build()
-        val intent = Intent(Intent.ACTION_SENDTO, uri)
-        startActivity(Intent.createChooser(intent, "Send Email"))
-    }
-
-    private fun generateSecurityCapabilities(): String {
-        val capabilities = StringBuilder()
-        val providers = Security.getProviders()
-        providers.forEach { provider ->
-            capabilities.append("Provider ${provider.name}/${provider.version}. Services:\n")
-            provider.services.forEachIndexed { index, service ->
-                capabilities.append("\t$index. ${service.type} - ${service.algorithm}\n")
-            }
-            capabilities.append("End provider ${provider.name}/${provider.version}\n")
-        }
-        return capabilities.toString()
-    }
 }

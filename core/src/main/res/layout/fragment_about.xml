@@ -142,35 +142,6 @@
                     app:drawableBottomCompat="@drawable/logo_keen_design" />
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/security"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardElevation="6dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/about_label_security_capabilities"
-                        android:textAppearance="@style/AppTheme.TextAppearance.Label" />
-
-                    <TextView
-                        android:id="@+id/security_data"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="Sample capabilities" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
