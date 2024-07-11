@@ -105,7 +105,8 @@ class TiqrMessagingService : FirebaseMessagingService() {
             }
 
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(challenge)).also { intent ->
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                intent.flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
             }
             val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
