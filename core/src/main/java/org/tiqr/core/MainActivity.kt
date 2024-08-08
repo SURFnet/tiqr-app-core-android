@@ -137,8 +137,11 @@ open class MainActivity : BaseActivity<ActivityMainBinding>(),
                 mainViewModel.parseChallenge(rawChallenge)
                 // clear the intent since we have handled it
                 intent.data = null
+                mainViewModel.clearCachedNotificationChallenge()
+                return
             }
         }
+        mainViewModel.tryCachedNotificationChallenge(this)
     }
 
     override fun onDestroy() {

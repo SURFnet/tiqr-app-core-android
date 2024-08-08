@@ -46,6 +46,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.tiqr.core.R
+import org.tiqr.data.repository.NotificationCacheRepository
 import org.tiqr.data.repository.base.TokenRegistrarRepository
 import javax.inject.Inject
 
@@ -64,19 +65,21 @@ class TiqrMessagingService : FirebaseMessagingService() {
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
     @Inject
-    internal lateinit var repository: TokenRegistrarRepository
+    internal lateinit var tokenRegistrarRepository: TokenRegistrarRepository
+
+    @Inject
+    internal lateinit var notificationCacheRepository: NotificationCacheRepository
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
         scope.launch {
-            repository.registerDeviceToken(token)
+            tokenRegistrarRepository.registerDeviceToken(token)
         }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-
         sendNotification(message)
     }
 
@@ -109,7 +112,6 @@ class TiqrMessagingService : FirebaseMessagingService() {
                     Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_DOCUMENT or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
             }
             val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-
             NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentIntent(PendingIntent.getActivity(this, 0, intent, flags))
                 .setSmallIcon(R.drawable.ic_notification)
@@ -124,7 +126,10 @@ class TiqrMessagingService : FirebaseMessagingService() {
                 .setColor(resources.getColor(R.color.primaryColor))
                 .build()
                 .apply {
-                    notificationManager.notify(0, this)
+                    val identifier = System.currentTimeMillis().toInt()
+                    val authenticationTimeout = message.data["authenticationTimeout"]?.toIntOrNull() ?: 150
+                    notificationManager.notify(identifier, this)
+                    notificationCacheRepository.saveLastNotificationData(challenge, authenticationTimeout, identifier)
                 }
         }
     }

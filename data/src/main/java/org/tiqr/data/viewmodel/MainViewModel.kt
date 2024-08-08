@@ -29,12 +29,14 @@
 
 package org.tiqr.data.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.tiqr.data.repository.AuthenticationRepository
 import org.tiqr.data.repository.EnrollmentRepository
+import org.tiqr.data.repository.NotificationCacheRepository
 import org.tiqr.data.repository.TokenRepository
 import org.tiqr.data.repository.base.TokenRegistrarRepository
 import javax.inject.Inject
@@ -45,6 +47,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val tokenRepository: TokenRegistrarRepository,
+    private val notificationCacheRepository: NotificationCacheRepository,
     private val enroll: EnrollmentRepository,
     private val auth: AuthenticationRepository
 ) : ViewModel() {
@@ -77,4 +80,15 @@ class MainViewModel @Inject constructor(
             tokenRepository.executeTokenMigrationIfNeeded(getDeviceTokenFunction)
         }
     }
+
+    fun tryCachedNotificationChallenge(context: Context) {
+        notificationCacheRepository.getLastNotificationChallenge(context)?.let { notificationChallenge ->
+            parseChallenge(notificationChallenge)
+        }
+    }
+
+    fun clearCachedNotificationChallenge() {
+        notificationCacheRepository.clearLastNotificationChallenge()
+    }
+
 }

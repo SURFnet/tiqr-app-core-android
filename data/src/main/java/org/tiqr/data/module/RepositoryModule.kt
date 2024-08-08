@@ -43,6 +43,7 @@ import org.tiqr.data.di.DefaultDispatcher
 import org.tiqr.data.repository.AuthenticationRepository
 import org.tiqr.data.repository.EnrollmentRepository
 import org.tiqr.data.repository.IdentityRepository
+import org.tiqr.data.repository.NotificationCacheRepository
 import org.tiqr.data.repository.TokenRepository
 import org.tiqr.data.repository.base.TokenRegistrarRepository
 import org.tiqr.data.service.DatabaseService
@@ -102,4 +103,16 @@ class TokenRepositoryModule {
         preferences: PreferenceService,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): TokenRegistrarRepository = TokenRepository(api, preferences, dispatcher)
+}
+
+
+@Module
+@InstallIn(SingletonComponent::class)
+@VisibleForTesting
+class NotificationCacheRepositoryModule {
+    @Provides
+    @Singleton
+    internal fun provideNotificationCacheRepository(
+        preferences: PreferenceService,
+    ): NotificationCacheRepository = NotificationCacheRepository(preferences)
 }
