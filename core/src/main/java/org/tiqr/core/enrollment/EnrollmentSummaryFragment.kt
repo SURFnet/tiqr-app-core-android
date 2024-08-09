@@ -29,9 +29,16 @@
 
 package org.tiqr.core.enrollment
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.LayoutRes
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +46,7 @@ import org.tiqr.core.R
 import org.tiqr.core.base.BaseFragment
 import org.tiqr.core.databinding.FragmentEnrollmentSummaryBinding
 import org.tiqr.data.viewmodel.EnrollmentViewModel
+import timber.log.Timber
 
 /**
  * Fragment to summarize the enrollment
@@ -47,8 +55,24 @@ import org.tiqr.data.viewmodel.EnrollmentViewModel
 class EnrollmentSummaryFragment : BaseFragment<FragmentEnrollmentSummaryBinding>() {
     private val viewModel by hiltNavGraphViewModels<EnrollmentViewModel>(R.id.enrollment_nav)
 
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+
     @LayoutRes
     override val layout = R.layout.fragment_enrollment_summary
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Initialize the ActivityResultLauncher
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    Timber.i("Notification permission granted")
+                } else {
+                    // Permission is denied
+                    Timber.w("Notification permission denied.")
+                }
+            }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,6 +80,21 @@ class EnrollmentSummaryFragment : BaseFragment<FragmentEnrollmentSummaryBinding>
         binding.viewModel = viewModel
         binding.buttonOk.setOnClickListener {
             findNavController().popBackStack()
+        }
+        // If on Android 13+, we need to request permission to show push messages
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestNotificationPermission()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun requestNotificationPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // Request the permission using the ActivityResultLauncher
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            // Permission already granted
+            Timber.i("Notification permission already granted.")
         }
     }
 }

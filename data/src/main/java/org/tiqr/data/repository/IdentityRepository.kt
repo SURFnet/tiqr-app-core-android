@@ -43,7 +43,8 @@ import org.tiqr.data.service.SecretService
  * Repository to interact with [Identity].
  */
 class IdentityRepository(
-    private val database: DatabaseService, private val secret: SecretService,
+    private val database: DatabaseService,
+    private val secret: SecretService,
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
     /**

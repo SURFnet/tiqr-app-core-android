@@ -32,10 +32,12 @@ package org.tiqr.data.service
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
 import timber.log.Timber
 import java.io.File
 import java.lang.RuntimeException
+import java.util.Date
 
 /**
  * Service to save and retrieve data saved in shared preferences.
@@ -48,6 +50,9 @@ class PreferenceService(private val context: Context) {
 
         private const val PREFS_KEY_VERSION = "version"
         private const val PREFS_KEY_TOKEN = "notification_token"
+        private const val PREFS_KEY_LAST_NOTIFICATION_ID = "last_notification_id"
+        private const val PREFS_KEY_LAST_NOTIFICATION_TIMEOUT_EPOCH = "last_notification_timeout_epoch"
+        private const val PREFS_KEY_LAST_NOTIFICATION_CHALLENGE = "last_notification_challenge"
         private const val PREFS_KEY_SALT = "salt"
         private const val PREFS_KEY_DEVICE_KEY = "device_key"
         private const val PREFS_KEY_NOTIFICATION_TOKEN_MIGRATION_EXECUTED = "notification_token_migration_executed"
@@ -62,6 +67,56 @@ class PreferenceService(private val context: Context) {
     var notificationToken: String?
         get() = notificationSharedPreferences.getString(PREFS_KEY_TOKEN, null)
         set(value) = notificationSharedPreferences.edit { putString(PREFS_KEY_TOKEN, value) }
+
+    var lastNotificationId: Int?
+        get() {
+            val result = notificationSharedPreferences.getInt(PREFS_KEY_LAST_NOTIFICATION_ID, Int.MIN_VALUE)
+            if (result == Int.MIN_VALUE) {
+                return null
+            }
+            return result
+        }
+        set(value) {
+            notificationSharedPreferences.edit {
+                if (value != null) {
+                    putInt(PREFS_KEY_LAST_NOTIFICATION_ID, value)
+                } else {
+                    remove(PREFS_KEY_LAST_NOTIFICATION_ID)
+                }
+            }
+        }
+
+    var lastNotificationTimeoutEpochMs: Long?
+        get() {
+            val result = notificationSharedPreferences.getLong(PREFS_KEY_LAST_NOTIFICATION_TIMEOUT_EPOCH, Long.MIN_VALUE)
+            if (result == Long.MIN_VALUE) {
+                return null
+            }
+            return result
+        }
+        set(value) {
+            notificationSharedPreferences.edit {
+                if (value != null) {
+                    putLong(PREFS_KEY_LAST_NOTIFICATION_TIMEOUT_EPOCH, value)
+                } else {
+                    remove(PREFS_KEY_LAST_NOTIFICATION_TIMEOUT_EPOCH)
+                }
+            }
+        }
+
+    var lastNotificationChallenge: String?
+        get() {
+            return notificationSharedPreferences.getString(PREFS_KEY_LAST_NOTIFICATION_CHALLENGE, null)
+        }
+        set(value) {
+            notificationSharedPreferences.edit {
+                if (value != null) {
+                    putString(PREFS_KEY_LAST_NOTIFICATION_CHALLENGE, value)
+                } else {
+                    remove(PREFS_KEY_LAST_NOTIFICATION_CHALLENGE)
+                }
+            }
+        }
 
     var salt: String?
         get() = securitySharedPreferences.getString(PREFS_KEY_SALT, null)
