@@ -36,6 +36,7 @@ import android.media.SoundPool
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.Surface
 import androidx.annotation.CheckResult
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.Camera
@@ -160,7 +161,6 @@ class ScanComponent(
      * Start the camera and QR code detection
      */
     private fun startCamera(cameraProvider: ProcessCameraProvider) {
-
         val rotation = viewFinder.display.rotation
         val metrics = viewFinder.context.resources.displayMetrics
         val screenAspectRatio = aspectRatio(metrics.widthPixels, metrics.heightPixels)
