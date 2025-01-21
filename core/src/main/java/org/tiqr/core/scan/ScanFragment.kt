@@ -47,6 +47,7 @@ import org.tiqr.data.model.ChallengeParseResult
 import org.tiqr.data.model.EnrollmentChallenge
 import org.tiqr.data.scan.ScanComponent
 import org.tiqr.data.viewmodel.ScanViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ScanFragment : BaseFragment<FragmentScanBinding>() {
@@ -99,7 +100,14 @@ class ScanFragment : BaseFragment<FragmentScanBinding>() {
                     .setTitle(result.failure.title)
                     .setMessage(result.failure.message)
                     .setCancelable(false)
-                    .setNegativeButton(R.string.button_cancel) { _, _ -> findNavController().popBackStack() }
+                    .setNegativeButton(R.string.button_cancel) { _, _ ->
+                        try {
+                            findNavController().popBackStack()
+                        } catch (ex: IllegalStateException) {
+                            // Fragment is already popped? Ignore.
+                            Timber.w(ex, "Could not pop back stack, nav controller not found.")
+                        }
+                    }
                     .setPositiveButton(R.string.button_retry) { dialog, _ ->
                         dialog.dismiss()
                         scanComponent.resumeScanning()
